@@ -16,7 +16,7 @@
 <!--         jdbc:jtds:sqlserver://localhost:1433/DB_KBINCIDENTE;instance=SQLEXPRESS -->
         
       <property name="username" value="sa" />
-      <property name="password" value="sql" />
+      <property name="password" value="123456" />
   </bean>
   
    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
