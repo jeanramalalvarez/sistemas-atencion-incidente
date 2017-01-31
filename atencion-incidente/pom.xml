@@ -125,7 +125,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>atencion_de_incidente</finalName>
+		<finalName>atencion-incidente</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
