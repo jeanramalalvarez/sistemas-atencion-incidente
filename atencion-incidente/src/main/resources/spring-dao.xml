@@ -8,5 +8,8 @@
 
 	<bean id="solicitudDAO" class="pe.upc.atencionincidente.daoImpl.SolicitudDaoImpl">
 	</bean>
+	
+	<bean id="incidenteDAO" class="pe.upc.atencionincidente.daoImpl.IncidenteDaoImpl">
+	</bean>
  
 </beans>
