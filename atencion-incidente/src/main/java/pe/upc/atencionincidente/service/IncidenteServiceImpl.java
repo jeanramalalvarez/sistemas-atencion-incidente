@@ -18,6 +18,15 @@ public class IncidenteServiceImpl implements IncidenteService {
 	public List<KbIncidente> buscarKbIncidente(KbIncidente form) {
 		return incidenteDAO.buscarKbIncidente(form);
 	}
+	
+	@Override
+	public String registrarKbIncidente(KbIncidente form) {
+		return incidenteDAO.registrarKbIncidente(form);
+	}
 
+	@Override
+	public int obtenerSecuencia() {
+		return incidenteDAO.obtenerSecuencia();
+	}
 
 }

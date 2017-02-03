@@ -8,4 +8,8 @@ public interface IncidenteDAO {
 
 	List<KbIncidente> buscarKbIncidente(KbIncidente form);
 	
+	String registrarKbIncidente(KbIncidente form);
+	
+	int obtenerSecuencia();
+	
 }

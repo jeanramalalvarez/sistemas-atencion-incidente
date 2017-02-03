@@ -43,7 +43,7 @@ public class IncidenteDaoImpl implements IncidenteDAO {
 		inParamMap.put("idSolucion", null);
 		inParamMap.put("idTipoSolucion", null);
 		inParamMap.put("numSecuencia", null);
-		
+		System.out.println("INPUT: " + inParamMap);
 		SqlParameterSource in = new MapSqlParameterSource(inParamMap);
 		
 		Map<String, Object> simpleJdbcCallResult = simpleJdbcCall.execute(in);
@@ -71,6 +71,63 @@ public class IncidenteDaoImpl implements IncidenteDAO {
 		});
 			
 		return list;
+	}
+
+	@SuppressWarnings("unchecked")
+	public String registrarKbIncidente(KbIncidente form){
+		
+		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("registrarKbIncidente");
+		
+		Map<String, Object> inParamMap = new HashMap<String, Object>();
+		inParamMap.put("idIncidenteBase", form.getIdIncidenteBase());
+		inParamMap.put("idTipoSolicitud", form.getIdTipoSolicitud());
+		inParamMap.put("idSistema", form.getIdSistema());
+		inParamMap.put("idProceso", form.getIdProceso());
+		inParamMap.put("idSubProceso",form.getIdSubproceso());
+		inParamMap.put("nuSecuencia", form.getNuSecuencia());
+		inParamMap.put("txtDescripcion",form.getTxtDescripcion());
+		inParamMap.put("flgResolucion", form.getFlgResolucion());
+		inParamMap.put("usuarioAdicion", form.getUsuarioAdicion());
+		
+		SqlParameterSource in = new MapSqlParameterSource(inParamMap);
+		
+		Map<String, Object> simpleJdbcCallResult = simpleJdbcCall.execute(in);
+		
+		ArrayList<Map<String,Object>> data= (ArrayList<Map<String,Object>>) simpleJdbcCallResult.get("#result-set-1");
+		    
+		System.out.println(data);
+		
+		Map<String,Object> map = data.get(0);
+		
+		return String.valueOf(map.get("newIdIncidenteBase"));
+		
+	}
+	
+	@Override
+	public int obtenerSecuencia() {
+		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("consultarKbIncidente");
+		
+		Map<String, Object> inParamMap = new HashMap<String, Object>();
+		inParamMap.put("tipo", 6);
+		inParamMap.put("idIncidenteBase", null);
+		inParamMap.put("idTipoSolicitud", null);
+		inParamMap.put("idSistema", null);
+		inParamMap.put("idProceso", null);
+		inParamMap.put("idSubproceso", null);
+		inParamMap.put("idSolucion", null);
+		inParamMap.put("idTipoSolucion", null);
+		inParamMap.put("numSecuencia", null);
+		System.out.println("INPUT: " + inParamMap);
+		SqlParameterSource in = new MapSqlParameterSource(inParamMap);
+		
+		Map<String, Object> simpleJdbcCallResult = simpleJdbcCall.execute(in);
+		
+		System.out.println("simpleJdbcCallResult");
+		System.out.println(simpleJdbcCallResult);
+		
+		ArrayList<Map<String,Object>> data= (ArrayList<Map<String,Object>>) simpleJdbcCallResult.get("#result-set-1");
+		int secuencia = Integer.valueOf(String.valueOf(data.get(0).get("NUM_SECUENCIA")));
+		return secuencia;
 	}
 
 

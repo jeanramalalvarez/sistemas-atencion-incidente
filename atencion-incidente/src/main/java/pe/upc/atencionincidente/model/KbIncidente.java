@@ -18,6 +18,8 @@ public class KbIncidente{
 	
 	private String flgResolucion;
 	
+	private String usuarioAdicion;
+	
 	public String getIdIncidenteBase() {
 		return idIncidenteBase;
 	}
@@ -80,6 +82,14 @@ public class KbIncidente{
 
 	public void setFlgResolucion(String flgResolucion) {
 		this.flgResolucion = flgResolucion;
+	}
+	
+	public String getUsuarioAdicion() {
+		return usuarioAdicion;
+	}
+	
+	public void setUsuarioAdicion(String usuarioAdicion) {
+		this.usuarioAdicion = usuarioAdicion;
 	}
 	
 }

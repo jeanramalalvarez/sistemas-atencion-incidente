@@ -37,14 +37,30 @@ public class IncidenteController {
 		return mav;
 	}
 	
-	@RequestMapping(method=RequestMethod.POST)
+	@RequestMapping(value="buscar", method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> buscarKbIncidente(@ModelAttribute KbIncidente form){
 		Map<String,Object> data = new HashMap<String,Object>();
 	
 		List<KbIncidente> solicitudes = incidenteService.buscarKbIncidente(form);
 		
-		data.put("data",solicitudes);
+		data.put("data", solicitudes);
 		
+		if(form.getIdSubproceso() != null && !form.getIdSubproceso().equals("") && solicitudes.size() > 0 ){
+			int secuencia = incidenteService.obtenerSecuencia();
+			data.put("secuencia", secuencia);
+		}
+		return data;
+	}
+	
+	@RequestMapping(method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> registrarKbIncidente(@ModelAttribute KbIncidente form){
+		Map<String,Object> data = new HashMap<String,Object>();
+	
+		form.setUsuarioAdicion("ADMIN");
+		String idIncidenteBase = incidenteService.registrarKbIncidente(form);
+
+		data.put("idIncidenteBase", idIncidenteBase);
+
 		return data;
 	}
 	

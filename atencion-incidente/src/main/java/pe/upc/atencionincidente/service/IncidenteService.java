@@ -8,4 +8,8 @@ public interface IncidenteService {
 
 	List<KbIncidente> buscarKbIncidente(KbIncidente form);
 	
+	String registrarKbIncidente(KbIncidente form);
+	
+	int obtenerSecuencia();
+	
 }

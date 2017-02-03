@@ -124,7 +124,7 @@
   											<div class="form-group">
     											<label for="secuencia" class="col-sm-5 control-label">Secuencia:</label>
     											<div class="col-sm-5">
-      												<form:input path="nuSecuencia" disabled="true" class="form-control" style="" />
+      												<form:input path="nuSecuencia" id="txtSecuencia" disabled="true" class="form-control" style="" />
     											</div>
   											</div>
   										</div>
@@ -134,7 +134,7 @@
   											<div class="form-group">
     											<label for="txtDescripcion" class="col-sm-5 control-label">Descripción:</label>
     											<div class="col-sm-7">
-      												<form:input path="txtDescripcion" disabled="false" class="form-control"/>
+      												<form:input path="txtDescripcion" id="txtDescripcion" disabled="false" class="form-control"/>
     											</div>
   											</div>
   										</div>
@@ -144,7 +144,7 @@
   											<div class="form-group">
     											<label for="inputtext3" class="col-sm-5 control-label">Ind. Sol. Usuario:</label>
     											<div class="col-sm-7">
-      												<form:checkbox path="flgResolucion" value="S" />
+      												<form:checkbox path="flgResolucion" id="flgResolucion"  value="S" />
     											</div>
   											</div>
   										</div>
@@ -152,7 +152,7 @@
 								</div><!-- fin row-->
 								<div class="row">
 								  <div class="pull-right" style="margin-right:10px;">
-								    <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button>
+								    <button id="btn_guardar" type="button" class="btn btn-primary">Guardar</button>
 								  </div>
 								</div>
     						</form:form><!-- fin form-->
