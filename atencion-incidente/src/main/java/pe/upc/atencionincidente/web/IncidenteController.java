@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import pe.upc.atencionincidente.model.KbIncidente;
+import pe.upc.atencionincidente.model.KbIncidenteKeyValues;
 import pe.upc.atencionincidente.service.IncidenteService;
 import pe.upc.atencionincidente.service.SolicitudService;
 
@@ -41,15 +43,38 @@ public class IncidenteController {
 	public @ResponseBody Map<String,Object> buscarKbIncidente(@ModelAttribute KbIncidente form){
 		Map<String,Object> data = new HashMap<String,Object>();
 	
-		List<KbIncidente> solicitudes = incidenteService.buscarKbIncidente(form);
+		form.setTipoConsulta("1");
+		List<KbIncidente> incidentes = incidenteService.buscarKbIncidente(form);
 		
-		data.put("data", solicitudes);
+		data.put("data", incidentes);
 		
-		if(form.getIdSubproceso() != null && !form.getIdSubproceso().equals("") && solicitudes.size() > 0 ){
+		if(form.getIdSubproceso() != null && !form.getIdSubproceso().equals("") && incidentes.size() > 0 ){
 			int secuencia = incidenteService.obtenerSecuencia();
 			data.put("secuencia", secuencia);
 		}
 		return data;
+	}
+	
+	@RequestMapping(value="/{idIncidenteBase}/agregarValorClave", method=RequestMethod.GET)
+	public ModelAndView cargarValorClave(@PathVariable(value="idIncidenteBase") String idIncidenteBase){
+		ModelAndView mav = new ModelAndView("incidente_valor_clave");
+	
+		KbIncidente form = new KbIncidente();
+		form.setIdIncidenteBase(idIncidenteBase);
+		form.setTipoConsulta("7");
+		List<KbIncidente> incidentes = incidenteService.buscarKbIncidente(form);
+		
+		if(incidentes.size() > 0){
+			KbIncidente kbIncidente = incidentes.get(0);
+			mav.addObject("tiposSolicitud", this.getListTipoSolicitud() );
+			mav.addObject("sistemas", this.getListSistemas() );
+			mav.addObject("procesos", this.listProcesos(kbIncidente.getIdSistema()) );
+			mav.addObject("subProcesos", this.listSubProcesos(kbIncidente.getIdSistema(), kbIncidente.getIdProceso()) );
+			mav.addObject("incidente",  kbIncidente);
+			mav.addObject("valoresClave",  this.getListKeyValues());
+		}
+
+		return mav;
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
@@ -60,6 +85,22 @@ public class IncidenteController {
 		String idIncidenteBase = incidenteService.registrarKbIncidente(form);
 
 		data.put("idIncidenteBase", idIncidenteBase);
+
+		return data;
+	}
+	
+	@RequestMapping(value="/agregarValorClave", method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> registrarKbIncidenteKeyValues(@ModelAttribute KbIncidenteKeyValues form){
+		Map<String,Object> data = new HashMap<String,Object>();
+	
+		
+		form.setUsuarioAdicion("ADMIN");
+		for (String valor : form.getValoresClaveIncidente().split(",")) {
+			form.setIdKeyValue(valor);
+			String idIncidenteBase = incidenteService.registrarKbIncidenteKeyValues(form);
+		}
+
+		//data.put("idIncidenteBase", idIncidenteBase);
 
 		return data;
 	}
@@ -83,6 +124,11 @@ public class IncidenteController {
 	
 	private Map<String, String> getListSistemas() {
 		List<Map<String, Object>> lstSis = solicitudService.getSistemas();
+		return populateCombo(lstSis);
+	}
+	
+	private Map<String, String> getListKeyValues() {
+		List<Map<String, Object>> lstSis = incidenteService.getListKeyValues();
 		return populateCombo(lstSis);
 	}
 	

@@ -11,12 +11,28 @@ $(document).ready(function() {
     		
     		secuencia:	function(){  return  $("#txtSecuencia").val(); },
     		descripcion:	function(){  return  $("#txtDescripcion").val(); },
-    		flagResolucion:	function(){  return  $("#flgResolucion").val(); },
+    		flagResolucion:	function(){  return  $("#flgResolucion").prop("checked")==true?"S":"N"; },
+    		
+    		idIncidenteBase:	function(){  return  $("#idIncidenteBase").val(); } ,
+    		valoresClaveIncidente:	function(){  return getValoresClaveIncidente();  } ,
     		
     		url:{
     			form:"/atencion-incidente/incidente"
     		},
-    		btnGuardar:$("#btn_guardar")
+    		btnGuardar:$("#btn_guardar"),
+    		
+    		urlValorClave:{
+    			form:"/atencion-incidente/incidente/agregarValorClave"
+    		},
+    		btnGuardarValorClave:$("#btn_guardar_valor_clave"),
+    }
+    
+    function getValoresClaveIncidente(){
+    	var cadena = "";
+    	$.each($("#valoresClaveIncidente").val(), function( index, value ) {
+    		cadena +=value +",";
+    	});
+    	return cadena;
     }
     
     consultarIncidenteForm2.tbSolicitudes = $('#solicitudes');
@@ -31,6 +47,13 @@ $(document).ready(function() {
     			nuSecuencia:	consultarIncidenteForm2.secuencia(),
     			txtDescripcion:	consultarIncidenteForm2.descripcion(),
     			flgResolucion:	consultarIncidenteForm2.flagResolucion(),
+    	};
+    };
+    
+    consultarIncidenteForm2.getParamsValorClave = function() {
+    	return {
+    			idIncidenteBase:	consultarIncidenteForm2.idIncidenteBase(),
+    			valoresClaveIncidente:	consultarIncidenteForm2.valoresClaveIncidente(),
     	};
     };
     
@@ -123,7 +146,7 @@ $(document).ready(function() {
         		{ data: 'flgResolucion',"orderable": false },
         		{ data: 'accion',"orderable": false ,
                   render:function(data, type, row){
-                	 var  btnEvaluar = '<button class="optBtn" style="width: 70px; float: left; margin-right: 8px;" ><a href="/atencion-incidente/incidente/'+row.idIncidenteBase +'/agregar">Agregar</a></button>';
+                	 var  btnEvaluar = '<button class="optBtn" style="width: 70px; float: left; margin-right: 8px;" ><a href="/atencion-incidente/incidente/'+row.idIncidenteBase +'/agregarValorClave">Agregar</a></button>';
                 	 btnEvaluar += '<button class="optBtn" style="width: 70px; float: left; margin-right: 8px;" ><a href="/atencion-incidente/incidente/'+row.idIncidenteBase +'/modificar">Modificar</a></button>';
                 	 btnEvaluar += '<button class="optBtn" style="width: 70px; float: left;" ><a href="/atencion-incidente/incidente/'+row.idIncidenteBase +'/soluciones">Soluciones</a></button>';
                 	 //if(row.estado=="Atendido" || row.estado=="Rechazado"){btnEvaluar="";}
@@ -149,6 +172,9 @@ $(document).ready(function() {
 				
 				//if(rsp.estado == 0){
 					consultarIncidenteForm2.btnGuardar.attr("disabled", false);
+					consultarIncidenteForm2.btn_buscarIncidente();
+					$("#txtDescripcion").val("");
+					$("#flgResolucion").prop("checked", false); 
 					//alert(rsp.mensaje);
 					//$("#descripcion").focus();
 				//}
@@ -179,7 +205,55 @@ $(document).ready(function() {
 		console.log(data);
 		consultarIncidenteForm2.processForm(data);
 
-	})
+	});
+    
+    consultarIncidenteForm2.processFormValorClave = function(data){
+		
+		//var tipo = nuevaSolicitud.form.tipoSolicitud.val();
+		//var fn = "sendFormTipo" + tipo;
+		
+    	consultarIncidenteForm2.btnGuardarValorClave.attr("disabled", true);
+
+		$.post(consultarIncidenteForm2.urlValorClave.form,data,function(rsp){
+			
+				//nuevaSolicitud.setIdSolicitud(rsp.idSolicitud,tipo);
+				
+				//if(rsp.estado == 0){
+					consultarIncidenteForm2.btnGuardarValorClave.attr("disabled", false);
+					//consultarIncidenteForm2.btn_buscarIncidente();
+					//$("#txtDescripcion").val("");
+					//$("#flgResolucion").prop("checked", false); 
+					//alert(rsp.mensaje);
+					//$("#descripcion").focus();
+				//}
+		},'json')
+	}
+    
+    consultarIncidenteForm2.btnGuardarValorClave.on("click",function(){
+    	console.log("click");
+		/*if(!consultarIncidenteForm2.validacion()){
+			return false;
+		}
+		
+		if(!consultarIncidenteForm2.validacionRegistro()){
+			return false;
+		}
+		
+		if( !confirm("Esta seguro de guardar solicitud?") ){
+
+			return false;
+		}*/
+		
+		//var	descripcionSol = $("#descripcion").val();
+		
+		//$("#descripcionSol").text(descripcionSol);
+		//$("#descripcionSol").val(descripcionSol);
+
+		var data = consultarIncidenteForm2.getParamsValorClave();
+		console.log(data);
+		consultarIncidenteForm2.processFormValorClave(data);
+
+	});
     
 
     /*------------------------------------------------------------------*/
@@ -269,6 +343,17 @@ $(document).ready(function() {
     
     $("#btn_buscarIncidente").on("click",consultarIncidenteForm2.btn_buscarIncidente);
     $("#btn_limpiarConsulta").on("click",consultarIncidenteForm2.limpiar);
+    
+    $("#btn_agregarVC").on("click",function(){
+    	!$('#valoresClave option:selected').remove().appendTo('#valoresClaveIncidente');
+    });
+    
+    $("#btn_quitarVC").on("click",function(){
+    	!$('#valoresClaveIncidente option:selected').remove().appendTo('#valoresClave');
+    });
+    
+    //$('.pasartodos').click(function() { $('#valoresClave option').each(function() { $(this).remove().appendTo('#valoresClaveIncidente'); }); });
+	//$('.quitartodos').click(function() { $('#valoresClaveIncidente option').each(function() { $(this).remove().appendTo('#valoresClave'); }); });
     
     /*------------------------------------------------------*/
 

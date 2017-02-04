@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import pe.upc.atencionincidente.dao.IncidenteDAO;
 import pe.upc.atencionincidente.model.KbIncidente;
+import pe.upc.atencionincidente.model.KbIncidenteKeyValues;
 
 @Repository
 public class IncidenteDaoImpl implements IncidenteDAO {
@@ -34,8 +35,8 @@ public class IncidenteDaoImpl implements IncidenteDAO {
 		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("consultarKbIncidente");
 		
 		Map<String, Object> inParamMap = new HashMap<String, Object>();
-		inParamMap.put("tipo", 1);
-		inParamMap.put("idIncidenteBase", null);
+		inParamMap.put("tipo", form.getTipoConsulta());
+		inParamMap.put("idIncidenteBase", form.getIdIncidenteBase());
 		inParamMap.put("idTipoSolicitud", form.getIdTipoSolicitud());
 		inParamMap.put("idSistema", form.getIdSistema());
 		inParamMap.put("idProceso", form.getIdProceso());
@@ -43,7 +44,7 @@ public class IncidenteDaoImpl implements IncidenteDAO {
 		inParamMap.put("idSolucion", null);
 		inParamMap.put("idTipoSolucion", null);
 		inParamMap.put("numSecuencia", null);
-		System.out.println("INPUT: " + inParamMap);
+		System.out.println("consultarKbIncidente - INPUT: " + inParamMap);
 		SqlParameterSource in = new MapSqlParameterSource(inParamMap);
 		
 		Map<String, Object> simpleJdbcCallResult = simpleJdbcCall.execute(in);
@@ -128,6 +129,53 @@ public class IncidenteDaoImpl implements IncidenteDAO {
 		ArrayList<Map<String,Object>> data= (ArrayList<Map<String,Object>>) simpleJdbcCallResult.get("#result-set-1");
 		int secuencia = Integer.valueOf(String.valueOf(data.get(0).get("NUM_SECUENCIA")));
 		return secuencia;
+	}
+
+	@Override
+	public List<Map<String, Object>> getListKeyValues() {
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		
+		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("listKeyValues");
+		
+		Map<String, Object> simpleJdbcCallResult = simpleJdbcCall.execute();
+		
+		ArrayList<Map<String,Object>> data= (ArrayList<Map<String,Object>>) simpleJdbcCallResult.get("#result-set-1");
+		    
+		data.forEach(item->{
+			
+			Map<String,Object> row = ( Map<String,Object>) item;
+			
+			row.put("id",String.valueOf(row.get("id")));
+			row.put("description",row.get("description").toString());
+			
+			list.add(row);
+			
+		});
+		
+		return list;
+	}
+
+	@Override
+	public String registrarKbIncidenteKeyValues(KbIncidenteKeyValues form) {
+		
+		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("registrarKbIncidenteKeyValues");
+		
+		Map<String, Object> inParamMap = new HashMap<String, Object>();
+		inParamMap.put("idIncidenteBase", form.getIdIncidenteBase());
+		inParamMap.put("idKeyValue", form.getIdKeyValue());
+		inParamMap.put("usuarioAdicion", form.getUsuarioAdicion());
+		
+		SqlParameterSource in = new MapSqlParameterSource(inParamMap);
+		
+		Map<String, Object> simpleJdbcCallResult = simpleJdbcCall.execute(in);
+		
+		ArrayList<Map<String,Object>> data= (ArrayList<Map<String,Object>>) simpleJdbcCallResult.get("#result-set-1");
+		    
+		System.out.println(data);
+		
+		Map<String,Object> map = data.get(0);
+		
+		return String.valueOf(map.get("newIdIncidenteBase"));
 	}
 
 

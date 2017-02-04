@@ -20,6 +20,8 @@ public class KbIncidente{
 	
 	private String usuarioAdicion;
 	
+	private String tipoConsulta;
+	
 	public String getIdIncidenteBase() {
 		return idIncidenteBase;
 	}
@@ -90,6 +92,14 @@ public class KbIncidente{
 	
 	public void setUsuarioAdicion(String usuarioAdicion) {
 		this.usuarioAdicion = usuarioAdicion;
+	}
+	
+	public String getTipoConsulta() {
+		return tipoConsulta;
+	}
+	
+	public void setTipoConsulta(String tipoConsulta) {
+		this.tipoConsulta = tipoConsulta;
 	}
 	
 }

@@ -3,7 +3,7 @@
 <!doctype html>
 <html>
 	<head>
- 		<title>Actualizar Base de Conocimiento de Incidentes</title>
+ 		<title>Agregar Valores Clave BC</title>
  		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/bootstrap/css/bootstrap.css" />
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/bootstrap/css/bootstrap-datepicker.css" />
@@ -58,7 +58,7 @@
     			<div class="container-fluid">
     				<div class="panel panel-default">
   						<div class="panel-heading">
-    						<h3 class="panel-title">Actualizar Base de Conocimiento de Incidentes</h3>
+    						<h3 class="panel-title">Agregar Valores Clave BC</h3>
   						</div>
   						<div class="panel-body">
     						<form>
@@ -68,18 +68,28 @@
   											<div class="form-group">
     											<label for="inputtext3" class="col-sm-5 control-label">Tipo Solicitud:</label>
     											<div class="col-sm-7">
-      												<form:select path="tiposSolicitud" id="tipoSolicitud" cssClass="form-control" required="true" >
-												    	<form:option value="" label="Seleccionar" />
-    													<form:options items="${tiposSolicitud}" />
+      												<form:select path="tiposSolicitud" id="tipoSolicitud" cssClass="form-control" required="true" disabled="true" >
+				    									<c:forEach items="${tiposSolicitud}" var="tipo">
+				            							  <option 
+				            							       <c:if test="${tipo.key eq incidente.idTipoSolicitud}">
+				            							         selected="selected"
+				            							       </c:if>
+				            							  value="${tipo.key}">${tipo.value} </option>
+				        								</c:forEach>
 													</form:select>
     											</div>
   											</div>
   											<div class="form-group">
     											<label for="inputtext3" class="col-sm-5 control-label">Sistema:</label>
 												<div class="col-sm-7">
-      												<form:select path="sistemas" id="sistema" cssClass="form-control" required="true" >
-												    	<form:option value="" label="Seleccionar" />
-    													<form:options items="${sistemas}" />
+      												<form:select path="sistemas" id="sistema" cssClass="form-control" required="true" disabled="true" >
+				    									<c:forEach items="${sistemas}" var="tipo">
+				            							  <option 
+				            							       <c:if test="${tipo.key eq incidente.idSistema}">
+				            							         selected="selected"
+				            							       </c:if>
+				            							  value="${tipo.key}">${tipo.value} </option>
+				        								</c:forEach>
 													</form:select>
     											</div>
   											</div>
@@ -90,36 +100,38 @@
   											<div class="form-group">
     											<label for="inputtext3" class="col-sm-5 control-label">Proceso:</label>
     											<div class="col-sm-7">
-      												<select class="form-control" id="proceso">
-                                  						<option value="">Seleccionar</option>
-                              						</select>
+      												<form:select path="procesos" id="procesos" cssClass="form-control" required="true" disabled="true" >
+				    									<c:forEach items="${procesos}" var="tipo">
+				            							  <option 
+				            							       <c:if test="${tipo.key eq incidente.idProceso}">
+				            							         selected="selected"
+				            							       </c:if>
+				            							  value="${tipo.key}">${tipo.value} </option>
+				        								</c:forEach>
+													</form:select>
     											</div>
   											</div>
   											<div class="form-group">
     											<label for="inputtext3" class="col-sm-5 control-label">Sub Proceso:</label>
  												<div class="col-sm-7">
-      												<select class="form-control" id="subProceso">
-                                  						<option value="">Seleccionar</option>
-                              						</select>
+      												<form:select path="subProcesos" id="subProcesos" cssClass="form-control" required="true" disabled="true" >
+				    									<c:forEach items="${subProcesos}" var="tipo">
+				            							  <option 
+				            							       <c:if test="${tipo.key eq incidente.idSubproceso}">
+				            							         selected="selected"
+				            							       </c:if>
+				            							  value="${tipo.key}">${tipo.value} </option>
+				        								</c:forEach>
+													</form:select>
     											</div>
   											</div>
   										</div>
 									</div>
 								</div><!-- fin row-->
-								<div class="row">
-								  <div class="pull-right" style="margin-right:10px;">
-								    <button id="btn_buscarIncidente" type="button" class="btn btn-primary">Buscar</button>
-								  </div>
-								</div>
-    						</form><!-- fin form-->
-  						</div>
-					</div>
-					
-					<div class="panel panel-default">
-  						<div class="panel-body">
-    						<form:form modelAttribute="incidente" >
+							</form><!-- fin form-->
+    						<form:form modelAttribute="incidente"  style="margin-top: -49px;" >
     							<div class="row">
-    								<div class="col-md-3">
+    								<div class="col-md-4">
     									<div class="form-horizontal">
   											<div class="form-group">
     											<label for="secuencia" class="col-sm-5 control-label">Secuencia:</label>
@@ -129,22 +141,56 @@
   											</div>
   										</div>
 									</div>
-									<div class="col-md-5">
+									<div class="col-md-4">
     									<div class="form-horizontal">
   											<div class="form-group">
     											<label for="txtDescripcion" class="col-sm-5 control-label">Descripción:</label>
     											<div class="col-sm-7">
-      												<form:input path="txtDescripcion" id="txtDescripcion" disabled="false" class="form-control"/>
+      												<form:input path="txtDescripcion" id="txtDescripcion" style="width:300px;" disabled="true" class="form-control" />
     											</div>
   											</div>
   										</div>
 									</div>
-									<div class="col-md-4">
+								</div><!-- fin row-->
+    						</form:form><!-- fin form-->
+  						</div>
+					</div>
+					
+					<div class="panel panel-default">
+  						<div class="panel-body" style="padding-left: 178px;" >
+    						<form>
+    							<input type="hidden" id="idIncidenteBase" value="${incidente.idIncidenteBase}" />
+    							<div class="row">
+    								<div class="col-md-3">
     									<div class="form-horizontal">
   											<div class="form-group">
-    											<label for="inputtext3" class="col-sm-5 control-label">Ind. Sol. Usuario:</label>
-    											<div class="col-sm-7">
-      												<form:checkbox path="flgResolucion" id="flgResolucion"  value="S" />
+    											<div class="col-sm-10">
+    											<label for="valoresClave" class="col-sm-10 control-label">Valores Clave:</label>
+      												<form:select path="valoresClave" id="valoresClave" cssClass="form-control" multiple="multiple" style="width: 200px; height: 250px;" >
+    													<form:options items="${valoresClave}" />
+													</form:select>
+    											</div>
+  											</div>
+  										</div>
+									</div>
+									<div class="col-md-2">
+    									<div class="form-horizontal">
+  											<div class="form-group">
+    											<div class="col-sm-5" style="padding-left: 32px;padding-top: 81px;" >
+    											<button id="btn_agregarVC" type="button" class="btn btn-primary" style="width: 100px; margin-bottom: 10px;" >Agregar > </button>
+    											
+    											<button id="btn_quitarVC" type="button" class="btn btn-primary" style="width: 100px;">< Quitar</button>
+    											</div>
+  											</div>
+  										</div>
+  									</div>
+									<div class="col-md-5">
+    									<div class="form-horizontal">
+  											<div class="form-group">
+    											<div class="col-sm-8">
+    											<label for="txtDescripcion" class="col-sm-12 control-label">Valores Clave por Incidente:</label>
+      												<select id="valoresClaveIncidente" class="form-control" multiple="multiple" style="width: 200px; height: 250px;" >
+													</select>
     											</div>
   											</div>
   										</div>
@@ -152,35 +198,13 @@
 								</div><!-- fin row-->
 								<div class="row">
 								  <div class="pull-right" style="margin-right:10px;">
-								    <button id="btn_guardar" type="button" class="btn btn-primary">Guardar</button>
+								    <button id="btn_guardar_valor_clave" type="button" class="btn btn-primary">Guardar</button>
+								    <a class="btn btn-primary" href="${pageContext.request.contextPath}/incidente" >Volder</a>
 								  </div>
 								</div>
-    						</form:form><!-- fin form-->
+    						</form><!-- fin form-->
   						</div>
 					</div>
-
-    				<div>
-	    				<table id="solicitudes" class="table table-striped table-bordered" cellspacing="0" width="100%">
-					        <thead>
-					            <tr>
-					                <th>Secuencia</th>
-					                <th>Descripción</th>
-					                <th>Ind. Sol. Usuario.</th>
-					                <th>Opci&oacute;n</th>
-					            </tr>
-					        </thead>
-					        <tfoot>
-					            <tr>
-					                <th>Secuencia</th>
-					                <th>Descripción</th>
-					                <th>Ind. Sol. Usuario.</th>
-					                <th width="230px;" >Opci&oacute;n</th>
-					            </tr>
-					        </tfoot>
-					        <tbody>
-					        </tbody>
-					    </table>
-    				</div>
 
     			</div>
   			</div>
