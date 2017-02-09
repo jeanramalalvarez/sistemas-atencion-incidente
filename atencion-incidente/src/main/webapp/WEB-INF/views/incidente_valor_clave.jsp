@@ -189,8 +189,9 @@
   											<div class="form-group">
     											<div class="col-sm-8">
     											<label for="txtDescripcion" class="col-sm-12 control-label">Valores Clave por Incidente:</label>
-      												<select id="valoresClaveIncidente" class="form-control" multiple="multiple" style="width: 200px; height: 250px;" >
-													</select>
+													<form:select path="valoresClaveIncidente" id="valoresClaveIncidente" cssClass="form-control" multiple="multiple" style="width: 200px; height: 250px;" >
+    													<form:options items="${valoresClaveIncidente}" />
+													</form:select>
     											</div>
   											</div>
   										</div>
@@ -213,7 +214,7 @@
 		<script type="text/javascript" language="javascript" src="${pageContext.request.contextPath}/vendors/datatables/js/jquery.dataTables.js">
 		</script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/vendors/js/moment.js"></script>
-		<script src="${pageContext.request.contextPath}/resources/js/incidente.js"></script>
+		<script src="${pageContext.request.contextPath}/resources/js/incidente_valor_clave.js"></script>
  	</body>
 
  </html>

@@ -41,4 +41,9 @@ public class IncidenteServiceImpl implements IncidenteService {
 		return incidenteDAO.registrarKbIncidenteKeyValues(form);
 	}
 
+	@Override
+	public List<KbIncidente> buscarKbIncidenteValorClave(KbIncidente form) {
+		return incidenteDAO.buscarKbIncidenteValorClave(form);
+	}
+
 }

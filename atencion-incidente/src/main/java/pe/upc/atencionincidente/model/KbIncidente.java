@@ -22,6 +22,8 @@ public class KbIncidente{
 	
 	private String tipoConsulta;
 	
+	private String keyValue;
+	
 	public String getIdIncidenteBase() {
 		return idIncidenteBase;
 	}
@@ -100,6 +102,14 @@ public class KbIncidente{
 	
 	public void setTipoConsulta(String tipoConsulta) {
 		this.tipoConsulta = tipoConsulta;
+	}
+	
+	public String getKeyValue() {
+		return keyValue;
+	}
+	
+	public void setKeyValue(String keyValue) {
+		this.keyValue = keyValue;
 	}
 	
 }

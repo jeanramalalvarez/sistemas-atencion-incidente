@@ -18,6 +18,7 @@ import pe.upc.atencionincidente.dao.IncidenteDAO;
 import pe.upc.atencionincidente.model.KbIncidente;
 import pe.upc.atencionincidente.model.KbIncidenteKeyValues;
 
+@SuppressWarnings("unchecked")
 @Repository
 public class IncidenteDaoImpl implements IncidenteDAO {
 	
@@ -74,7 +75,6 @@ public class IncidenteDaoImpl implements IncidenteDAO {
 		return list;
 	}
 
-	@SuppressWarnings("unchecked")
 	public String registrarKbIncidente(KbIncidente form){
 		
 		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("registrarKbIncidente");
@@ -176,6 +176,47 @@ public class IncidenteDaoImpl implements IncidenteDAO {
 		Map<String,Object> map = data.get(0);
 		
 		return String.valueOf(map.get("newIdIncidenteBase"));
+	}
+	
+	@Override
+	public List<KbIncidente> buscarKbIncidenteValorClave(KbIncidente form) {
+		
+		List<KbIncidente> list = new ArrayList<KbIncidente>();
+		
+		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("consultarKbIncidente");
+		
+		Map<String, Object> inParamMap = new HashMap<String, Object>();
+		inParamMap.put("tipo", form.getTipoConsulta());
+		inParamMap.put("idIncidenteBase", form.getIdIncidenteBase());
+		inParamMap.put("idTipoSolicitud", null);
+		inParamMap.put("idSistema", null);
+		inParamMap.put("idProceso", null);
+		inParamMap.put("idSubproceso", null);
+		inParamMap.put("idSolucion", null);
+		inParamMap.put("idTipoSolucion", null);
+		inParamMap.put("numSecuencia", null);
+		System.out.println("consultarKbIncidente - INPUT: " + inParamMap);
+		SqlParameterSource in = new MapSqlParameterSource(inParamMap);
+		
+		Map<String, Object> simpleJdbcCallResult = simpleJdbcCall.execute(in);
+		
+		System.out.println("simpleJdbcCallResult");
+		System.out.println(simpleJdbcCallResult);
+		
+		ArrayList<Map<String,Object>> data= (ArrayList<Map<String,Object>>) simpleJdbcCallResult.get("#result-set-1");
+		    
+		data.forEach(row->{
+			
+			KbIncidente sol = new KbIncidente();
+			
+			sol.setIdIncidenteBase(String.valueOf(row.get("ID_INCIDENTEBASE")));
+			sol.setKeyValue(String.valueOf(row.get("ID_KEYVALUE")));
+			
+			list.add(sol);
+			
+		});
+			
+		return list;
 	}
 
 

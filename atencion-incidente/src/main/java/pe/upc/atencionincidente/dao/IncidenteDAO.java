@@ -18,4 +18,6 @@ public interface IncidenteDAO {
 	
 	String registrarKbIncidenteKeyValues(KbIncidenteKeyValues form);
 	
+	List<KbIncidente> buscarKbIncidenteValorClave(KbIncidente form);
+	
 }

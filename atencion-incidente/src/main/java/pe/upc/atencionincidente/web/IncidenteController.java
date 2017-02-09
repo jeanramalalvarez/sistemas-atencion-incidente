@@ -1,5 +1,6 @@
 package pe.upc.atencionincidente.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -41,6 +42,7 @@ public class IncidenteController {
 	
 	@RequestMapping(value="buscar", method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> buscarKbIncidente(@ModelAttribute KbIncidente form){
+		System.out.println("buscarKbIncidente");
 		Map<String,Object> data = new HashMap<String,Object>();
 	
 		form.setTipoConsulta("1");
@@ -57,6 +59,7 @@ public class IncidenteController {
 	
 	@RequestMapping(value="/{idIncidenteBase}/agregarValorClave", method=RequestMethod.GET)
 	public ModelAndView cargarValorClave(@PathVariable(value="idIncidenteBase") String idIncidenteBase){
+		System.out.println("cargarValorClave");
 		ModelAndView mav = new ModelAndView("incidente_valor_clave");
 	
 		KbIncidente form = new KbIncidente();
@@ -65,13 +68,20 @@ public class IncidenteController {
 		List<KbIncidente> incidentes = incidenteService.buscarKbIncidente(form);
 		
 		if(incidentes.size() > 0){
+			Map<String, String> listKeyValues = this.getListKeyValues();
+			Map<String, String> listKbIncidenteValorClave = this.getListKbIncidenteValorClave(idIncidenteBase);
+			for (Map.Entry<String, String> entry : listKbIncidenteValorClave.entrySet()){
+				listKeyValues.remove(entry.getKey());
+			}
+			
 			KbIncidente kbIncidente = incidentes.get(0);
 			mav.addObject("tiposSolicitud", this.getListTipoSolicitud() );
 			mav.addObject("sistemas", this.getListSistemas() );
 			mav.addObject("procesos", this.listProcesos(kbIncidente.getIdSistema()) );
 			mav.addObject("subProcesos", this.listSubProcesos(kbIncidente.getIdSistema(), kbIncidente.getIdProceso()) );
 			mav.addObject("incidente",  kbIncidente);
-			mav.addObject("valoresClave",  this.getListKeyValues());
+			mav.addObject("valoresClave",  listKeyValues);
+			mav.addObject("valoresClaveIncidente",  listKbIncidenteValorClave);
 		}
 
 		return mav;
@@ -79,6 +89,7 @@ public class IncidenteController {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> registrarKbIncidente(@ModelAttribute KbIncidente form){
+		System.out.println("registrarKbIncidente");
 		Map<String,Object> data = new HashMap<String,Object>();
 	
 		form.setUsuarioAdicion("ADMIN");
@@ -91,6 +102,7 @@ public class IncidenteController {
 	
 	@RequestMapping(value="/agregarValorClave", method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> registrarKbIncidenteKeyValues(@ModelAttribute KbIncidenteKeyValues form){
+		System.out.println("registrarKbIncidenteKeyValues");
 		Map<String,Object> data = new HashMap<String,Object>();
 	
 		
@@ -130,6 +142,23 @@ public class IncidenteController {
 	private Map<String, String> getListKeyValues() {
 		List<Map<String, Object>> lstSis = incidenteService.getListKeyValues();
 		return populateCombo(lstSis);
+	}
+	
+	private Map<String, String> getListKbIncidenteValorClave(String idIncidenteBase) {
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		KbIncidente form = new KbIncidente();
+		form.setIdIncidenteBase(idIncidenteBase);
+		form.setTipoConsulta("8");
+		List<KbIncidente> incidentes = incidenteService.buscarKbIncidenteValorClave(form);
+		
+		incidentes.forEach(item->{
+			Map<String,Object> row = new HashMap<String, Object>();
+			row.put("id", item.getKeyValue());
+			row.put("description", item.getKeyValue());
+			list.add(row);
+		});
+		
+		return populateCombo(list);
 	}
 	
 	public Map<String, String> populateCombo(List<Map<String, Object>> rows) {

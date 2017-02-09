@@ -1,8 +1,8 @@
-var consultarIncidenteForm2;
+var incidenteForm;
 
 $(document).ready(function() {
    
-    consultarIncidenteForm2 = {
+    incidenteForm = {
     		ini : true,
     		tipoSolicitud:	function(){  return  $("#tipoSolicitud").val(); },
     		sistema:	function(){  return  $("#sistema").val(); } ,
@@ -13,51 +13,28 @@ $(document).ready(function() {
     		descripcion:	function(){  return  $("#txtDescripcion").val(); },
     		flagResolucion:	function(){  return  $("#flgResolucion").prop("checked")==true?"S":"N"; },
     		
-    		idIncidenteBase:	function(){  return  $("#idIncidenteBase").val(); } ,
-    		valoresClaveIncidente:	function(){  return getValoresClaveIncidente();  } ,
-    		
     		url:{
     			form:"/atencion-incidente/incidente"
     		},
     		btnGuardar:$("#btn_guardar"),
-    		
-    		urlValorClave:{
-    			form:"/atencion-incidente/incidente/agregarValorClave"
-    		},
-    		btnGuardarValorClave:$("#btn_guardar_valor_clave"),
     }
     
-    function getValoresClaveIncidente(){
-    	var cadena = "";
-    	$.each($("#valoresClaveIncidente").val(), function( index, value ) {
-    		cadena +=value +",";
-    	});
-    	return cadena;
-    }
+    incidenteForm.tbSolicitudes = $('#solicitudes');
     
-    consultarIncidenteForm2.tbSolicitudes = $('#solicitudes');
-    
-    consultarIncidenteForm2.getParams = function() {
+    incidenteForm.getParams = function() {
     	return {
-    			idTipoSolicitud:	consultarIncidenteForm2.tipoSolicitud(),
-    			idSistema:	consultarIncidenteForm2.sistema(),
-    			idProceso:	consultarIncidenteForm2.proceso(),
-    			idSubproceso:	consultarIncidenteForm2.subProceso(),
+    			idTipoSolicitud:	incidenteForm.tipoSolicitud(),
+    			idSistema:	incidenteForm.sistema(),
+    			idProceso:	incidenteForm.proceso(),
+    			idSubproceso:	incidenteForm.subProceso(),
     			
-    			nuSecuencia:	consultarIncidenteForm2.secuencia(),
-    			txtDescripcion:	consultarIncidenteForm2.descripcion(),
-    			flgResolucion:	consultarIncidenteForm2.flagResolucion(),
+    			nuSecuencia:	incidenteForm.secuencia(),
+    			txtDescripcion:	incidenteForm.descripcion(),
+    			flgResolucion:	incidenteForm.flagResolucion(),
     	};
     };
     
-    consultarIncidenteForm2.getParamsValorClave = function() {
-    	return {
-    			idIncidenteBase:	consultarIncidenteForm2.idIncidenteBase(),
-    			valoresClaveIncidente:	consultarIncidenteForm2.valoresClaveIncidente(),
-    	};
-    };
-    
-    consultarIncidenteForm2.limpiar = function(){
+    incidenteForm.limpiar = function(){
     	$("#tipoSolicitud").val("");
     	$("#sistema").val("");
     	$("#proceso").val("");
@@ -65,24 +42,24 @@ $(document).ready(function() {
     	$("#tipoSolicitud").focus();
     }
     
-    consultarIncidenteForm2.validacion = function(){
+    incidenteForm.validacion = function(){
     	
-    	if ( consultarIncidenteForm2.tipoSolicitud() != "" )
+    	if ( incidenteForm.tipoSolicitud() != "" )
     	{
     		return true
     	}
     	
-    	if ( consultarIncidenteForm2.sistema() != "" )
+    	if ( incidenteForm.sistema() != "" )
     	{
     		return true
     	}
     	
-    	if ( consultarIncidenteForm2.proceso() != "" )
+    	if ( incidenteForm.proceso() != "" )
     	{
     		return true
     	}
     	
-    	if ( consultarIncidenteForm2.subProceso() != "" )
+    	if ( incidenteForm.subProceso() != "" )
     	{
     		return true
     	}
@@ -90,14 +67,14 @@ $(document).ready(function() {
     	return false;
     }
     
-    consultarIncidenteForm2.validacionRegistro = function(){
+    incidenteForm.validacionRegistro = function(){
     	
-    	if ( consultarIncidenteForm2.descripcion() != "" )
+    	if ( incidenteForm.descripcion() != "" )
     	{
     		return true
     	}
     	
-    	/*if ( consultarIncidenteForm2.flagResolucion() != "" )
+    	/*if ( incidenteForm.flagResolucion() != "" )
     	{
     		return true
     	}*/
@@ -105,23 +82,23 @@ $(document).ready(function() {
     	return false;
     }
     
-    consultarIncidenteForm2.btn_buscarIncidente = function() {
+    incidenteForm.btn_buscarIncidente = function() {
     	
-    	if (!consultarIncidenteForm2.validacion()){
+    	if (!incidenteForm.validacion()){
     		
     		alert("Debe seleccionar por lo menos un filtro");
     		return false;
     	}
     	
-    	consultarIncidenteForm2.ini = false;
+    	incidenteForm.ini = false;
     	
-    	var table = consultarIncidenteForm2.tbSolicitudes.DataTable();
+    	var table = incidenteForm.tbSolicitudes.DataTable();
     	table.ajax.reload();
     	
     	$("#tipoSolicitud").focus();
     }
 
-    consultarIncidenteForm2.tbSolicitudes.DataTable(
+    incidenteForm.tbSolicitudes.DataTable(
     	{
     		searching: false,
     		lengthChange: false,
@@ -130,7 +107,7 @@ $(document).ready(function() {
             ajax: {
                     url: '/atencion-incidente/incidente/buscar',
                     "type": "POST",
-                    data: consultarIncidenteForm2.getParams,
+                    data: incidenteForm.getParams,
                     //dataSrc: 'data'
                     dataSrc: function(json){
                     	if(json.secuencia != undefined && json.secuencia != null && json.secuencia != ""){
@@ -159,20 +136,20 @@ $(document).ready(function() {
     );
     
     
-    consultarIncidenteForm2.processForm = function(data){
+    incidenteForm.processForm = function(data){
 		
 		//var tipo = nuevaSolicitud.form.tipoSolicitud.val();
 		//var fn = "sendFormTipo" + tipo;
 		
-    	consultarIncidenteForm2.btnGuardar.attr("disabled", true);
+    	incidenteForm.btnGuardar.attr("disabled", true);
 
-		$.post(consultarIncidenteForm2.url.form,data,function(rsp){
+		$.post(incidenteForm.url.form,data,function(rsp){
 			
 				//nuevaSolicitud.setIdSolicitud(rsp.idSolicitud,tipo);
 				
 				//if(rsp.estado == 0){
-					consultarIncidenteForm2.btnGuardar.attr("disabled", false);
-					consultarIncidenteForm2.btn_buscarIncidente();
+					incidenteForm.btnGuardar.attr("disabled", false);
+					incidenteForm.btn_buscarIncidente();
 					$("#txtDescripcion").val("");
 					$("#flgResolucion").prop("checked", false); 
 					//alert(rsp.mensaje);
@@ -181,17 +158,17 @@ $(document).ready(function() {
 		},'json')
 	}
     
-    consultarIncidenteForm2.btnGuardar.on("click",function(){
+    incidenteForm.btnGuardar.on("click",function(){
 
-		if(!consultarIncidenteForm2.validacion()){
+		if(!incidenteForm.validacion()){
 			return false;
 		}
 		
-		if(!consultarIncidenteForm2.validacionRegistro()){
+		if(!incidenteForm.validacionRegistro()){
 			return false;
 		}
 		
-		if( !confirm("Esta seguro de guardar solicitud?") ){
+		if( !confirm("Esta seguro de guardar el incidente?") ){
 
 			return false;
 		}
@@ -201,57 +178,9 @@ $(document).ready(function() {
 		//$("#descripcionSol").text(descripcionSol);
 		//$("#descripcionSol").val(descripcionSol);
 
-		var data = consultarIncidenteForm2.getParams();
+		var data = incidenteForm.getParams();
 		console.log(data);
-		consultarIncidenteForm2.processForm(data);
-
-	});
-    
-    consultarIncidenteForm2.processFormValorClave = function(data){
-		
-		//var tipo = nuevaSolicitud.form.tipoSolicitud.val();
-		//var fn = "sendFormTipo" + tipo;
-		
-    	consultarIncidenteForm2.btnGuardarValorClave.attr("disabled", true);
-
-		$.post(consultarIncidenteForm2.urlValorClave.form,data,function(rsp){
-			
-				//nuevaSolicitud.setIdSolicitud(rsp.idSolicitud,tipo);
-				
-				//if(rsp.estado == 0){
-					consultarIncidenteForm2.btnGuardarValorClave.attr("disabled", false);
-					//consultarIncidenteForm2.btn_buscarIncidente();
-					//$("#txtDescripcion").val("");
-					//$("#flgResolucion").prop("checked", false); 
-					//alert(rsp.mensaje);
-					//$("#descripcion").focus();
-				//}
-		},'json')
-	}
-    
-    consultarIncidenteForm2.btnGuardarValorClave.on("click",function(){
-    	console.log("click");
-		/*if(!consultarIncidenteForm2.validacion()){
-			return false;
-		}
-		
-		if(!consultarIncidenteForm2.validacionRegistro()){
-			return false;
-		}
-		
-		if( !confirm("Esta seguro de guardar solicitud?") ){
-
-			return false;
-		}*/
-		
-		//var	descripcionSol = $("#descripcion").val();
-		
-		//$("#descripcionSol").text(descripcionSol);
-		//$("#descripcionSol").val(descripcionSol);
-
-		var data = consultarIncidenteForm2.getParamsValorClave();
-		console.log(data);
-		consultarIncidenteForm2.processFormValorClave(data);
+		incidenteForm.processForm(data);
 
 	});
     
@@ -341,20 +270,8 @@ $(document).ready(function() {
 	});
     
     
-    $("#btn_buscarIncidente").on("click",consultarIncidenteForm2.btn_buscarIncidente);
-    $("#btn_limpiarConsulta").on("click",consultarIncidenteForm2.limpiar);
-    
-    $("#btn_agregarVC").on("click",function(){
-    	!$('#valoresClave option:selected').remove().appendTo('#valoresClaveIncidente');
-    });
-    
-    $("#btn_quitarVC").on("click",function(){
-    	!$('#valoresClaveIncidente option:selected').remove().appendTo('#valoresClave');
-    });
-    
-    //$('.pasartodos').click(function() { $('#valoresClave option').each(function() { $(this).remove().appendTo('#valoresClaveIncidente'); }); });
-	//$('.quitartodos').click(function() { $('#valoresClaveIncidente option').each(function() { $(this).remove().appendTo('#valoresClave'); }); });
-    
+    $("#btn_buscarIncidente").on("click",incidenteForm.btn_buscarIncidente);
+    $("#btn_limpiarConsulta").on("click",incidenteForm.limpiar);
     /*------------------------------------------------------*/
 
 } );
