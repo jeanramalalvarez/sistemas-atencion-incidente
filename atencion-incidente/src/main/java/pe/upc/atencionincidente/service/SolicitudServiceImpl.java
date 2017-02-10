@@ -3,8 +3,6 @@ package pe.upc.atencionincidente.service;
 import java.util.List;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +16,7 @@ import pe.upc.atencionincidente.model.Incidente;
 import pe.upc.atencionincidente.model.Solicitante;
 import pe.upc.atencionincidente.model.Solicitud;
 
-@Service(value="solicitudService")
+@Service
 public class SolicitudServiceImpl implements SolicitudService {
 	
 	@Autowired

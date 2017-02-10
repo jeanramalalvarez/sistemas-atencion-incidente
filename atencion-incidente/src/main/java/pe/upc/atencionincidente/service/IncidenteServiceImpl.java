@@ -10,7 +10,7 @@ import pe.upc.atencionincidente.dao.IncidenteDAO;
 import pe.upc.atencionincidente.model.KbIncidente;
 import pe.upc.atencionincidente.model.KbIncidenteKeyValues;
 
-@Service(value="incidenteService")
+@Service
 public class IncidenteServiceImpl implements IncidenteService {
 	
 	@Autowired

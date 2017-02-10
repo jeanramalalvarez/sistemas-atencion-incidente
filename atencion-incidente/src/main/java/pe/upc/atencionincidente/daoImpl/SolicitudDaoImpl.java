@@ -1,17 +1,12 @@
 package pe.upc.atencionincidente.daoImpl;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -29,6 +24,7 @@ import pe.upc.atencionincidente.model.Incidente;
 import pe.upc.atencionincidente.model.Solicitante;
 import pe.upc.atencionincidente.model.Solicitud;
 
+@SuppressWarnings("unchecked")
 @Repository
 public class SolicitudDaoImpl implements SolicitudDAO {
 	
@@ -135,7 +131,6 @@ public class SolicitudDaoImpl implements SolicitudDAO {
 		return list;
 	}
 
-	@SuppressWarnings("unchecked")
 	public String  saveSolicitud(DatosSolicitudForm form,Solicitante solicitante){
 		
 		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("newSolicitud");

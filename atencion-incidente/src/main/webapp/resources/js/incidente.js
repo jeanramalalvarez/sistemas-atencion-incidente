@@ -4,6 +4,7 @@ $(document).ready(function() {
    
     incidenteForm = {
     		ini : true,
+    		incidente:	function(){  return  $("#idIncidenteBase").val(); },
     		tipoSolicitud:	function(){  return  $("#tipoSolicitud").val(); },
     		sistema:	function(){  return  $("#sistema").val(); } ,
     		proceso:	function(){  return  $("#proceso").val(); },
@@ -17,12 +18,17 @@ $(document).ready(function() {
     			form:"/atencion-incidente/incidente"
     		},
     		btnGuardar:$("#btn_guardar"),
+    		
+    		urlCargar:{
+    			form:"/atencion-incidente/incidente/cargar"
+    		},
     }
     
     incidenteForm.tbSolicitudes = $('#solicitudes');
     
     incidenteForm.getParams = function() {
     	return {
+    			idIncidenteBase:	incidenteForm.incidente(),
     			idTipoSolicitud:	incidenteForm.tipoSolicitud(),
     			idSistema:	incidenteForm.sistema(),
     			idProceso:	incidenteForm.proceso(),
@@ -118,13 +124,13 @@ $(document).ready(function() {
                     }
             },
     		columns: [
-        		{ data: 'nuSecuencia',"orderable": false },
+        		{ data: 'nuSecuencia',"orderable": true },
         		{ data: 'txtDescripcion' },
         		{ data: 'flgResolucion',"orderable": false },
-        		{ data: 'accion',"orderable": false ,
+        		{ data: 'opcion',"orderable": false ,
                   render:function(data, type, row){
                 	 var  btnEvaluar = '<button class="optBtn" style="width: 70px; float: left; margin-right: 8px;" ><a href="/atencion-incidente/incidente/'+row.idIncidenteBase +'/agregarValorClave">Agregar</a></button>';
-                	 btnEvaluar += '<button class="optBtn" style="width: 70px; float: left; margin-right: 8px;" ><a href="/atencion-incidente/incidente/'+row.idIncidenteBase +'/modificar">Modificar</a></button>';
+                	 btnEvaluar += '<button class="optBtn btn_cargar" style="width: 70px; float: left; margin-right: 8px;" data-id="' + row.idIncidenteBase + '" >Modificar</a></button>';
                 	 btnEvaluar += '<button class="optBtn" style="width: 70px; float: left;" ><a href="/atencion-incidente/incidente/'+row.idIncidenteBase +'/soluciones">Soluciones</a></button>';
                 	 //if(row.estado=="Atendido" || row.estado=="Rechazado"){btnEvaluar="";}
                 	 return btnEvaluar;
@@ -184,6 +190,24 @@ $(document).ready(function() {
 
 	});
     
+    
+    incidenteForm.cargarIncidente = function(data){
+		$.post(incidenteForm.urlCargar.form, data, function(rsp){
+			
+			$("#idIncidenteBase").val(rsp.incidente.idIncidenteBase);
+			$("#txtSecuencia").val(rsp.incidente.nuSecuencia);
+    		$("#txtDescripcion").val(rsp.incidente.txtDescripcion);
+    		$("#flgResolucion").prop( "checked", rsp.incidente.flgResolucion == "S"?true:false );
+				
+		},'json')
+	}
+    
+    $(document).on('click', '.btn_cargar', function(){
+    	var data = {idIncidenteBase: $(this).attr("data-id")};
+    	incidenteForm.cargarIncidente(data);
+   });
+    
+
 
     /*------------------------------------------------------------------*/
     
@@ -273,5 +297,5 @@ $(document).ready(function() {
     $("#btn_buscarIncidente").on("click",incidenteForm.btn_buscarIncidente);
     $("#btn_limpiarConsulta").on("click",incidenteForm.limpiar);
     /*------------------------------------------------------*/
-
+    
 } );

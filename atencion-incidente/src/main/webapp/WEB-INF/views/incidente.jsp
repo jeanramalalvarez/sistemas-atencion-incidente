@@ -118,6 +118,7 @@
 					<div class="panel panel-default">
   						<div class="panel-body">
     						<form:form modelAttribute="incidente" >
+    							<form:hidden path="idIncidenteBase" id="idIncidenteBase" />
     							<div class="row">
     								<div class="col-md-3">
     									<div class="form-horizontal">
@@ -163,9 +164,9 @@
 	    				<table id="solicitudes" class="table table-striped table-bordered" cellspacing="0" width="100%">
 					        <thead>
 					            <tr>
-					                <th>Secuencia</th>
+					                <th style="width: 100px;" >Secuencia</th>
 					                <th>Descripción</th>
-					                <th>Ind. Sol. Usuario.</th>
+					                <th style="width: 100px;">Ind. Sol. Usuario.</th>
 					                <th>Opci&oacute;n</th>
 					            </tr>
 					        </thead>

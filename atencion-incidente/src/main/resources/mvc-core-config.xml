@@ -12,7 +12,7 @@
         http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!-- Scans the classpath of this application for @Components to deploy as beans -->
-	<context:component-scan base-package="pe.upc.atencionincidente.web,pe.upc.atencionincidente.service" />
+	<context:component-scan base-package="pe.upc.atencionincidente" />
 	
 	<!-- Configures the @Controller programming model -->
 	<mvc:annotation-driven />

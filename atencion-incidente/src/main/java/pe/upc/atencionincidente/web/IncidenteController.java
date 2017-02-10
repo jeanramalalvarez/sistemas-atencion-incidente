@@ -50,10 +50,37 @@ public class IncidenteController {
 		
 		data.put("data", incidentes);
 		
-		if(form.getIdSubproceso() != null && !form.getIdSubproceso().equals("") && incidentes.size() > 0 ){
-			int secuencia = incidenteService.obtenerSecuencia();
-			data.put("secuencia", secuencia);
-		}
+//		if(form.getIdSubproceso() != null && !form.getIdSubproceso().equals("") && incidentes.size() > 0 ){
+//			int secuencia = incidenteService.obtenerSecuencia();
+//			data.put("secuencia", secuencia);
+//		}
+		return data;
+	}
+		
+	@RequestMapping(method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> registrarKbIncidente(@ModelAttribute KbIncidente form){
+		System.out.println("registrarKbIncidente");
+		Map<String,Object> data = new HashMap<String,Object>();
+	
+		form.setUsuarioAdicion("ADMIN");
+		String idIncidenteBase = incidenteService.registrarKbIncidente(form);
+
+		data.put("idIncidenteBase", idIncidenteBase);
+
+		return data;
+	}
+	
+	@RequestMapping(value="/cargar", method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> cargarKbIncidente(@ModelAttribute KbIncidente form){
+		System.out.println("cargarKbIncidente");
+		
+		form.setTipoConsulta("7");
+		List<KbIncidente> incidentes = incidenteService.buscarKbIncidente(form);
+		KbIncidente kbIncidente = incidentes.get(0);
+
+		Map<String,Object> data = new HashMap<String,Object>();		
+		data.put("incidente",  kbIncidente);
+
 		return data;
 	}
 	
@@ -87,19 +114,6 @@ public class IncidenteController {
 		return mav;
 	}
 	
-	@RequestMapping(method=RequestMethod.POST)
-	public @ResponseBody Map<String,Object> registrarKbIncidente(@ModelAttribute KbIncidente form){
-		System.out.println("registrarKbIncidente");
-		Map<String,Object> data = new HashMap<String,Object>();
-	
-		form.setUsuarioAdicion("ADMIN");
-		String idIncidenteBase = incidenteService.registrarKbIncidente(form);
-
-		data.put("idIncidenteBase", idIncidenteBase);
-
-		return data;
-	}
-	
 	@RequestMapping(value="/agregarValorClave", method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> registrarKbIncidenteKeyValues(@ModelAttribute KbIncidenteKeyValues form){
 		System.out.println("registrarKbIncidenteKeyValues");
@@ -110,6 +124,7 @@ public class IncidenteController {
 		for (String valor : form.getValoresClaveIncidente().split(",")) {
 			form.setIdKeyValue(valor);
 			String idIncidenteBase = incidenteService.registrarKbIncidenteKeyValues(form);
+			System.out.println(idIncidenteBase);
 		}
 
 		//data.put("idIncidenteBase", idIncidenteBase);
