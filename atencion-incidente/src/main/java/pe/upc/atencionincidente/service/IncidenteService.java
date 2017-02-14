@@ -5,6 +5,7 @@ import java.util.Map;
 
 import pe.upc.atencionincidente.model.KbIncidente;
 import pe.upc.atencionincidente.model.KbIncidenteKeyValues;
+import pe.upc.atencionincidente.model.KbSolucion;
 
 public interface IncidenteService {
 
@@ -19,5 +20,9 @@ public interface IncidenteService {
 	String registrarKbIncidenteKeyValues(KbIncidenteKeyValues form);
 	
 	List<KbIncidente> buscarKbIncidenteValorClave(KbIncidente form);
+	
+	List<KbSolucion> buscarKbSolucion(KbSolucion form);
+	
+	String registrarKbSolucion(KbSolucion form);
 	
 }

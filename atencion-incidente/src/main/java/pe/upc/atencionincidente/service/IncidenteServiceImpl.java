@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import pe.upc.atencionincidente.dao.IncidenteDAO;
 import pe.upc.atencionincidente.model.KbIncidente;
 import pe.upc.atencionincidente.model.KbIncidenteKeyValues;
+import pe.upc.atencionincidente.model.KbSolucion;
 
 @Service
 public class IncidenteServiceImpl implements IncidenteService {
@@ -44,6 +45,16 @@ public class IncidenteServiceImpl implements IncidenteService {
 	@Override
 	public List<KbIncidente> buscarKbIncidenteValorClave(KbIncidente form) {
 		return incidenteDAO.buscarKbIncidenteValorClave(form);
+	}
+
+	@Override
+	public List<KbSolucion> buscarKbSolucion(KbSolucion form) {
+		return incidenteDAO.buscarKbSolucion(form);
+	}
+
+	@Override
+	public String registrarKbSolucion(KbSolucion form) {
+		return incidenteDAO.registrarKbSolucion(form);
 	}
 
 }

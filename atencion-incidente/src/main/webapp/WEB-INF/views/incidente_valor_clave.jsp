@@ -131,22 +131,22 @@
 							</form><!-- fin form-->
     						<form:form modelAttribute="incidente"  style="margin-top: -49px;" >
     							<div class="row">
-    								<div class="col-md-4">
+    								<div class="col-md-2" style="text-align: right;" >
     									<div class="form-horizontal">
   											<div class="form-group">
-    											<label for="secuencia" class="col-sm-5 control-label">Secuencia:</label>
-    											<div class="col-sm-5">
+    											<div class="col-sm-10">
+    											<label for="secuencia" >Secuencia:</label>
       												<form:input path="nuSecuencia" id="txtSecuencia" disabled="true" class="form-control" style="" />
     											</div>
   											</div>
   										</div>
 									</div>
-									<div class="col-md-4">
+									<div class="col-md-9" style="margin-left: -10px;" >
     									<div class="form-horizontal">
   											<div class="form-group">
-    											<label for="txtDescripcion" class="col-sm-5 control-label">Descripción:</label>
-    											<div class="col-sm-7">
-      												<form:input path="txtDescripcion" id="txtDescripcion" style="width:300px;" disabled="true" class="form-control" />
+    											<div class="col-sm-16">
+    											<label for="txtDescripcion" >Descripción:</label>
+      												<form:textarea path="txtDescripcion" id="txtDescripcion" disabled="true" class="form-control" style="resize: none;" />
     											</div>
   											</div>
   										</div>

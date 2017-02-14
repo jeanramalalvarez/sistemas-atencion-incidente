@@ -120,33 +120,37 @@
     						<form:form modelAttribute="incidente" >
     							<form:hidden path="idIncidenteBase" id="idIncidenteBase" />
     							<div class="row">
-    								<div class="col-md-3">
+    								<div class="col-md-2">
     									<div class="form-horizontal">
   											<div class="form-group">
-    											<label for="secuencia" class="col-sm-5 control-label">Secuencia:</label>
-    											<div class="col-sm-5">
+    											<div class="col-sm-8">
+    												<label for="secuencia">Secuencia:</label>
       												<form:input path="nuSecuencia" id="txtSecuencia" disabled="true" class="form-control" style="" />
     											</div>
   											</div>
   										</div>
 									</div>
-									<div class="col-md-5">
+									<div class="col-md-7">
     									<div class="form-horizontal">
   											<div class="form-group">
-    											<label for="txtDescripcion" class="col-sm-5 control-label">Descripción:</label>
-    											<div class="col-sm-7">
-      												<form:input path="txtDescripcion" id="txtDescripcion" disabled="false" class="form-control"/>
+    											<div class="col-sm-14">
+	    											<label for="txtDescripcion">Descripción:</label>
+      												<form:textarea path="txtDescripcion" id="txtDescripcion" disabled="false" class="form-control" style="resize: none;" />
     											</div>
   											</div>
   										</div>
 									</div>
-									<div class="col-md-4">
+									<div class="col-md-2">
     									<div class="form-horizontal">
+  											<div class="form-group" style="height: 10px;" >
+    											<div class="col-sm-1">
+    											</div>
+  											</div>
   											<div class="form-group">
-    											<label for="inputtext3" class="col-sm-5 control-label">Ind. Sol. Usuario:</label>
-    											<div class="col-sm-7">
+    											<div class="col-sm-1">
       												<form:checkbox path="flgResolucion" id="flgResolucion"  value="S" />
     											</div>
+    											<label for="inputtext3">Ind. Sol. Usuario:</label>
   											</div>
   										</div>
 									</div>
@@ -161,7 +165,7 @@
 					</div>
 
     				<div>
-	    				<table id="solicitudes" class="table table-striped table-bordered" cellspacing="0" width="100%">
+	    				<table id="incidentes" class="table table-striped table-bordered" cellspacing="0" width="100%">
 					        <thead>
 					            <tr>
 					                <th style="width: 100px;" >Secuencia</th>
@@ -182,12 +186,86 @@
 					        </tbody>
 					    </table>
     				</div>
-
+    				
+					<div id="contentSolucion" class="panel panel-default" style="margin-top: 20px; display: none;" >
+  						<div class="panel-body">
+							<ul class="nav nav-tabs" id="tabIncidente" role="tabIncidente" >
+							  <li role="presentation" class="active"><a href="#tabSolucionesIncidente" id="solucionesIncidente-tab" role="tab" data-toggle="tab" aria-controls="1" aria-expanded="true" >Soluciones del Incidente</a></li>
+							  <li role="presentation"><a href="#tabSolucion" id="solucion-tab" role="tab" data-toggle="tab" aria-controls="2" aria-expanded="false" >Solución</a></li>
+							  <li role="presentation"><a href="#tabValidacion" id="validacion-tab" role="tab" data-toggle="tab" aria-controls="3" aria-expanded="false" >Validaciones</a></li>
+							</ul>
+							<div class="tab-content">
+								<input type="hidden" id="idSolucion" >
+							    <div role="tabpanel" class="tab-pane active" id="tabSolucionesIncidente" style="margin-top: 15px;" >
+							    
+							    	<div class="row">
+	    								<div class="col-md-2">
+	    									<div class="form-horizontal">
+	  											<div class="form-group">
+	    											<div class="col-sm-8">
+	    												<label for="txtNroSolucion">Nro Solución:</label>
+	      												<input path="nuSolucion" id="txtNroSolucion" disabled="true" class="form-control" style="" />
+	      												
+	      												<label for="txtNroSolucion">Prioridad:</label>
+	      												<input path="prioridad" id="txtPrioridad" class="form-control" style="" />
+	    											</div>
+	  											</div>
+	  										</div>
+										</div>
+										<div class="col-md-8">
+	    									<div class="form-horizontal">
+	  											<div class="form-group">
+	    											<div class="col-sm-14">
+	    											<label for="txtDescripcion">Descripción:</label>
+	      												<textarea path="txtDescripcion" id="txtDescripcionSolucion" class="form-control" style="resize: none;"></textarea>
+	    											</div>
+	  											</div>
+	  										</div>
+										</div>
+									</div>
+									
+									<div class="row">
+									  <div class="pull-right" style="margin-right:10px;">
+									    <button id="btn_guardar_solucion" type="button" class="btn btn-primary">Guardar</button>
+									  </div>
+									</div>
+									
+				    				<div>
+					    				<table id="soluciones" class="table table-striped table-bordered" cellspacing="0" width="100%" style="margin-top: 15px;" >
+									        <thead>
+									            <tr>
+									                <th style="width: 100px;" >Nro. Solución</th>
+									                <th>Descripción</th>
+									                <th style="width: 100px;">Prioridad</th>
+									                <th style="width: 100px;">Cant. Uso</th>
+									                <th>Opci&oacute;n</th>
+									            </tr>
+									        </thead>
+									        <tfoot>
+									            <tr>
+									                <th style="width: 100px;" >Nro. Solución</th>
+									                <th>Descripción</th>
+									                <th style="width: 100px;">Prioridad</th>
+									                <th style="width: 100px;">Cant. Uso</th>
+									                <th style="width: 160px;" >Opci&oacute;n</th>
+									            </tr>
+									        </tfoot>
+									        <tbody>
+									        </tbody>
+									    </table>
+				    				</div>
+							    
+							    </div>
+							    <div role="tabpanel" class="tab-pane" id="tabSolucion">Solución</div>
+							    <div role="tabpanel" class="tab-pane" id="tabValidacion">Validaciones</div>
+							 </div>
+						</div>
+					</div>
     			</div>
   			</div>
 		</div>
 
-		<script type="text/javascript" language="javascript" src="${pageContext.request.contextPath}/vendors/datatables/js/jquery.dataTables.js">
+		<script type="text/javascript" src="${pageContext.request.contextPath}/vendors/datatables/js/jquery.dataTables.js">
 		</script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/vendors/js/moment.js"></script>
 		<script src="${pageContext.request.contextPath}/resources/js/incidente.js"></script>

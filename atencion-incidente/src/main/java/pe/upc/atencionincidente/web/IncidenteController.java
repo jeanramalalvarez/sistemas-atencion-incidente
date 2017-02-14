@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import pe.upc.atencionincidente.model.KbIncidente;
 import pe.upc.atencionincidente.model.KbIncidenteKeyValues;
+import pe.upc.atencionincidente.model.KbSolucion;
 import pe.upc.atencionincidente.service.IncidenteService;
 import pe.upc.atencionincidente.service.SolicitudService;
 
@@ -128,6 +129,32 @@ public class IncidenteController {
 		}
 
 		//data.put("idIncidenteBase", idIncidenteBase);
+
+		return data;
+	}
+	
+	@RequestMapping(value="/solucion/buscar", method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> buscarKbSolucion(@ModelAttribute KbSolucion form){
+		System.out.println("buscarKbSolucion");
+		
+		form.setTipoConsulta("2");
+		List<KbSolucion> soluciones = incidenteService.buscarKbSolucion(form);
+
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("soluciones",  soluciones);
+
+		return data;
+	}
+	
+	@RequestMapping(value="/solucion", method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> registrarKbSolucion(@ModelAttribute KbSolucion form){
+		System.out.println("registrarKbSolucion");
+		Map<String,Object> data = new HashMap<String,Object>();
+	
+		form.setUsuarioAdicion("ADMIN");
+		String idSolucion = incidenteService.registrarKbSolucion(form);
+
+		data.put("idSolucion", idSolucion);
 
 		return data;
 	}

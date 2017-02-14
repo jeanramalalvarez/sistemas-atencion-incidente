@@ -2,6 +2,9 @@ var incidenteForm;
 
 $(document).ready(function() {
    
+	var parametros = null;
+	//parametros: {idIncidenteBase: "2"},
+	
     incidenteForm = {
     		ini : true,
     		incidente:	function(){  return  $("#idIncidenteBase").val(); },
@@ -14,6 +17,10 @@ $(document).ready(function() {
     		descripcion:	function(){  return  $("#txtDescripcion").val(); },
     		flagResolucion:	function(){  return  $("#flgResolucion").prop("checked")==true?"S":"N"; },
     		
+    		solucion:	function(){  return  $("#idSolucion").val(); },
+    		prioridad:	function(){  return  $("#txtPrioridad").val(); },
+    		descripcionSolucion:	function(){  return  $("#txtDescripcionSolucion").val(); },
+    		
     		url:{
     			form:"/atencion-incidente/incidente"
     		},
@@ -22,21 +29,37 @@ $(document).ready(function() {
     		urlCargar:{
     			form:"/atencion-incidente/incidente/cargar"
     		},
+    		
+    		urlSolucion:{
+    			form:"/atencion-incidente/incidente/solucion"
+    		},
+    		btnGuardarSolucion:$("#btn_guardar_solucion"),
     }
     
-    incidenteForm.tbSolicitudes = $('#solicitudes');
+    incidenteForm.tbIncidentes = $('#incidentes');
     
     incidenteForm.getParams = function() {
     	return {
     			idIncidenteBase:	incidenteForm.incidente(),
     			idTipoSolicitud:	incidenteForm.tipoSolicitud(),
-    			idSistema:	incidenteForm.sistema(),
-    			idProceso:	incidenteForm.proceso(),
-    			idSubproceso:	incidenteForm.subProceso(),
+    			idSistema:			incidenteForm.sistema(),
+    			idProceso:			incidenteForm.proceso(),
+    			idSubproceso:		incidenteForm.subProceso(),
     			
-    			nuSecuencia:	incidenteForm.secuencia(),
-    			txtDescripcion:	incidenteForm.descripcion(),
-    			flgResolucion:	incidenteForm.flagResolucion(),
+    			nuSecuencia:		incidenteForm.secuencia(),
+    			txtDescripcion:		incidenteForm.descripcion(),
+    			flgResolucion:		incidenteForm.flagResolucion(),
+    	};
+    };
+    
+    incidenteForm.getParamsSolucion = function() {
+    	return {
+    			idSolucion: 		"",
+    			idIncidenteBase:	incidenteForm.incidente(),
+    			txtDescripcion:		incidenteForm.descripcionSolucion(),
+    			nuSecuencia: 		null,
+    			nuPrioridad: 		incidenteForm.prioridad(),
+    			nuVecesUso: 		"0",
     	};
     };
     
@@ -98,13 +121,13 @@ $(document).ready(function() {
     	
     	incidenteForm.ini = false;
     	
-    	var table = incidenteForm.tbSolicitudes.DataTable();
+    	var table = incidenteForm.tbIncidentes.DataTable();
     	table.ajax.reload();
     	
     	$("#tipoSolicitud").focus();
     }
 
-    incidenteForm.tbSolicitudes.DataTable(
+    incidenteForm.tbIncidentes.DataTable(
     	{
     		searching: false,
     		lengthChange: false,
@@ -130,8 +153,8 @@ $(document).ready(function() {
         		{ data: 'opcion',"orderable": false ,
                   render:function(data, type, row){
                 	 var  btnEvaluar = '<button class="optBtn" style="width: 70px; float: left; margin-right: 8px;" ><a href="/atencion-incidente/incidente/'+row.idIncidenteBase +'/agregarValorClave">Agregar</a></button>';
-                	 btnEvaluar += '<button class="optBtn btn_cargar" style="width: 70px; float: left; margin-right: 8px;" data-id="' + row.idIncidenteBase + '" >Modificar</a></button>';
-                	 btnEvaluar += '<button class="optBtn" style="width: 70px; float: left;" ><a href="/atencion-incidente/incidente/'+row.idIncidenteBase +'/soluciones">Soluciones</a></button>';
+                	 btnEvaluar += '<button class="optBtn btn_cargar" style="width: 70px; float: left; margin-right: 8px;" data-id="' + row.idIncidenteBase + '" >Modificar</button>';
+                	 btnEvaluar += '<button class="optBtn btn_soluciones" style="width: 70px; float: left;" data-id="' + row.idIncidenteBase + '" >Soluciones</button>';
                 	 //if(row.estado=="Atendido" || row.estado=="Rechazado"){btnEvaluar="";}
                 	 return btnEvaluar;
                   }
@@ -149,7 +172,7 @@ $(document).ready(function() {
 		
     	incidenteForm.btnGuardar.attr("disabled", true);
 
-		$.post(incidenteForm.url.form,data,function(rsp){
+		$.post(incidenteForm.url.form, data, function(rsp){
 			
 				//nuevaSolicitud.setIdSolicitud(rsp.idSolicitud,tipo);
 				
@@ -190,10 +213,13 @@ $(document).ready(function() {
 
 	});
     
+    $(document).on('click', '.btn_cargar', function(){
+    	var data = {idIncidenteBase: $(this).attr("data-id")};
+    	incidenteForm.cargarIncidente(data);
+   });
     
     incidenteForm.cargarIncidente = function(data){
 		$.post(incidenteForm.urlCargar.form, data, function(rsp){
-			
 			$("#idIncidenteBase").val(rsp.incidente.idIncidenteBase);
 			$("#txtSecuencia").val(rsp.incidente.nuSecuencia);
     		$("#txtDescripcion").val(rsp.incidente.txtDescripcion);
@@ -202,45 +228,138 @@ $(document).ready(function() {
 		},'json')
 	}
     
-    $(document).on('click', '.btn_cargar', function(){
-    	var data = {idIncidenteBase: $(this).attr("data-id")};
-    	incidenteForm.cargarIncidente(data);
+    $(document).on('click', '.btn_soluciones', function(){
+    	incidenteForm.buscarSolucion($(this).attr("data-id"));
    });
     
+    incidenteForm.buscarSolucion = function(data){
+    	$("#contentSolucion").css("display", "block");
+    	$("#idIncidenteBase").val(data);
+    	var table = incidenteForm.tbSoluciones.DataTable();
+    	table.ajax.reload();
+    	//var strAncla=$(this).attr('href'); //id del ancla
+		$('body,html').stop(true,true).animate({				
+			scrollTop: $("#contentSolucion").offset().top
+		},1000);
+	}
+    
+    
+    incidenteForm.tbSoluciones = $('#soluciones');
+    
+    incidenteForm.tbSoluciones.DataTable(
+        	{
+        		searching: false,
+        		lengthChange: false,
+        		pageLength: 10,
+        		//data: data,
+                ajax: {
+                        url: '/atencion-incidente/incidente/solucion/buscar',
+                        "type": "POST",
+                        data: incidenteForm.getParamsSolucion,
+                        //dataSrc: 'data'
+                        dataSrc: function(json){
+                        	console.log(json);
+                        	/*if(json.secuencia != undefined && json.secuencia != null && json.secuencia != ""){
+                        		console.log(json.secuencia);
+                        		$("#txtSecuencia").val(json.secuencia)
+                        	}*/
+                        	return json.soluciones
+                        }
+                },
+        		columns: [
+            		{ data: 'nuSecuencia',"orderable": true },
+            		{ data: 'txtDescripcion' },
+            		{ data: 'nuPrioridad',"orderable": false },
+            		{ data: 'nuVecesUso',"orderable": false },
+            		{ data: 'opcion',"orderable": false ,
+                      render:function(data, type, row){
+                    	 var btnEvaluar = '<button class="optBtn btn_cargar" style="width: 70px; float: left; margin-right: 8px;" data-id="' + row.idSolucion + '" >Eliminar</button>';
+                    	 btnEvaluar += '<button class="optBtn btn_cargar" style="width: 70px; float: left; margin-right: 8px;" data-id="' + row.idSolucion + '" >Modificar</button>';
+                    	 return btnEvaluar;
+                      }
+            		}
+        		]
+        	}
+
+        );
+    
+    incidenteForm.processFormSolucion = function(data){
+		
+		//var tipo = nuevaSolicitud.form.tipoSolicitud.val();
+		//var fn = "sendFormTipo" + tipo;
+		
+    	incidenteForm.btnGuardarSolucion.attr("disabled", true);
+
+		$.post(incidenteForm.urlSolucion.form, data, function(rsp){
+			
+				//nuevaSolicitud.setIdSolicitud(rsp.idSolicitud,tipo);
+				
+				//if(rsp.estado == 0){
+					incidenteForm.btnGuardarSolucion.attr("disabled", false);
+					incidenteForm.buscarSolucion($("#idIncidenteBase").val());
+				//}
+		},'json')
+	}
+    
+    incidenteForm.btnGuardarSolucion.on("click",function(){
+    	/*
+		if(!incidenteForm.validacion()){
+			return false;
+		}
+		
+		if(!incidenteForm.validacionRegistro()){
+			return false;
+		}
+		
+		if( !confirm("Esta seguro de guardar el incidente?") ){
+
+			return false;
+		}
+		*/
+		//var	descripcionSol = $("#descripcion").val();
+		
+		//$("#descripcionSol").text(descripcionSol);
+		//$("#descripcionSol").val(descripcionSol);
+
+		var data = incidenteForm.getParamsSolucion();
+		console.log(data);
+		incidenteForm.processFormSolucion(data);
+
+	});
 
 
     /*------------------------------------------------------------------*/
     
-    $("#nrocti").on('blur',function(){
-    	
-    	var reg = /^CTI[0-9]{7}$/;
-    	var v = $.trim($(this).val());
-    	
-    	if( v.length > 0 ){
-    		
-    		if( !reg.test(v) ){
-    			alert("Debe ingresar el Nro. de CTI con formato correcto: CTINNNNNNN.");
-    			$(this).val("");
-    			$(this).focus();
-    		}
-    	}
-    })
+//    $("#nrocti").on('blur',function(){
+//    	
+//    	var reg = /^CTI[0-9]{7}$/;
+//    	var v = $.trim($(this).val());
+//    	
+//    	if( v.length > 0 ){
+//    		
+//    		if( !reg.test(v) ){
+//    			alert("Debe ingresar el Nro. de CTI con formato correcto: CTINNNNNNN.");
+//    			$(this).val("");
+//    			$(this).focus();
+//    		}
+//    	}
+//    })
     
-    $("#nroSS").on('blur',function(){
-    	
-    	var reg = /^SS[0-9]{5}$/;
-    	var v = $.trim($(this).val());
-    	
-    	if( v.length > 0 ){
-    		
-    		if( !reg.test(v) ){
-    			alert("Debe ingresar el Nro. SS con formato correcto: SSNNNNN.");
-    			$(this).val("");
-    			$(this).focus();
-    		}
-    	}
-    })
-    
+//    $("#nroSS").on('blur',function(){
+//    	
+//    	var reg = /^SS[0-9]{5}$/;
+//    	var v = $.trim($(this).val());
+//    	
+//    	if( v.length > 0 ){
+//    		
+//    		if( !reg.test(v) ){
+//    			alert("Debe ingresar el Nro. SS con formato correcto: SSNNNNN.");
+//    			$(this).val("");
+//    			$(this).focus();
+//    		}
+//    	}
+//    })
+//    
     $("#sistema").change(function(){
 		
 		var data = {
@@ -249,13 +368,9 @@ $(document).ready(function() {
 		
 		$.get("/atencion-incidente/incidente/getListProcesos",data,function(rsp){
 			
-			//console.log("procesos")
-			//console.log(rsp)
-			
 			var html = "<option value=''>Seleccionar</option>";
 			
 			for(var i in rsp){
-				
 				html += "<option value='"+ i +"'>"+ rsp[i] +"</option>";
 			}
 			
@@ -274,15 +389,11 @@ $(document).ready(function() {
 				idProceso:$(this).val()
 		}
 		
-		$.get("/atencion-incidente/incidente/getListSubProcesos",data,function(rsp){
-			
-			//console.log("procesos")
-			//console.log(rsp)
+		$.get("/atencion-incidente/incidente/getListSubProcesos", data, function(rsp){
 			
 			var html = "<option value=''>Seleccionar</option>";
 			
 			for(var i in rsp){
-				
 				html += "<option value='"+ i +"'>"+ rsp[i] +"</option>";
 			}
 			
