@@ -14,7 +14,7 @@
  		<script type="text/javascript" src="${pageContext.request.contextPath}/vendors/js/jquery.min.js"></script>
  		<script src="${pageContext.request.contextPath}/vendors/bootstrap/js/bootstrap.min.js"></script>
  		<script src="${pageContext.request.contextPath}/vendors/bootstrap/js/bootstrap-datepicker.js"></script>
-
+		<script src="${pageContext.request.contextPath}/vendors/bootstrap/js/bootstrap-filestyle.min.js"></script>
  	</head>
 
  	<body>
@@ -157,6 +157,7 @@
 								</div><!-- fin row-->
 								<div class="row">
 								  <div class="pull-right" style="margin-right:10px;">
+								  	<button id="btn_limpiar" type="button" class="btn btn-primary">Limpiar</button>
 								    <button id="btn_guardar" type="button" class="btn btn-primary">Guardar</button>
 								  </div>
 								</div>
@@ -168,18 +169,18 @@
 	    				<table id="incidentes" class="table table-striped table-bordered" cellspacing="0" width="100%">
 					        <thead>
 					            <tr>
-					                <th style="width: 100px;" >Secuencia</th>
+					                <th style="width: 70px;">Secuencia</th>
 					                <th>Descripción</th>
 					                <th style="width: 100px;">Ind. Sol. Usuario.</th>
-					                <th>Opci&oacute;n</th>
+					                <th style="width: 230px;">Opci&oacute;n</th>
 					            </tr>
 					        </thead>
 					        <tfoot>
 					            <tr>
-					                <th>Secuencia</th>
+					                <th style="width: 70px;">Secuencia</th>
 					                <th>Descripción</th>
-					                <th>Ind. Sol. Usuario.</th>
-					                <th width="230px;" >Opci&oacute;n</th>
+					                <th style="width: 100px;">Ind. Sol. Usuario.</th>
+					                <th style="width: 230px;">Opci&oacute;n</th>
 					            </tr>
 					        </tfoot>
 					        <tbody>
@@ -195,68 +196,147 @@
 							  <li role="presentation"><a href="#tabValidacion" id="validacion-tab" role="tab" data-toggle="tab" aria-controls="3" aria-expanded="false" >Validaciones</a></li>
 							</ul>
 							<div class="tab-content">
-								<input type="hidden" id="idSolucion" >
 							    <div role="tabpanel" class="tab-pane active" id="tabSolucionesIncidente" style="margin-top: 15px;" >
-							    
-							    	<div class="row">
-	    								<div class="col-md-2">
-	    									<div class="form-horizontal">
-	  											<div class="form-group">
-	    											<div class="col-sm-8">
-	    												<label for="txtNroSolucion">Nro Solución:</label>
-	      												<input path="nuSolucion" id="txtNroSolucion" disabled="true" class="form-control" style="" />
-	      												
-	      												<label for="txtNroSolucion">Prioridad:</label>
-	      												<input path="prioridad" id="txtPrioridad" class="form-control" style="" />
-	    											</div>
-	  											</div>
-	  										</div>
+									<input type="hidden" id="idSolucion" />
+									<div class="panel-body">
+								    	<div class="row">
+		    								<div class="col-md-2">
+		    									<div class="form-horizontal">
+		  											<div class="form-group">
+		    											<div class="col-sm-9">
+		    												<label for="txtNroSolucion">Nro Solución:</label>
+		      												<input id="txtNroSolucion" disabled="disabled" class="form-control" style="" />
+		      												
+		      												<label for="txtNroSolucion">Prioridad:</label>
+		      												<input id="txtPrioridad" class="form-control" style="" />
+		    											</div>
+		  											</div>
+		  										</div>
+											</div>
+											<div class="col-md-8">
+		    									<div class="form-horizontal">
+		  											<div class="form-group">
+		    											<div class="col-sm-14">
+		    											<label for="txtDescripcion">Descripción:</label>
+		      												<textarea id="txtDescripcionSolucion" class="form-control" style="resize: none;"></textarea>
+		    											</div>
+		  											</div>
+		  										</div>
+											</div>
 										</div>
-										<div class="col-md-8">
-	    									<div class="form-horizontal">
-	  											<div class="form-group">
-	    											<div class="col-sm-14">
-	    											<label for="txtDescripcion">Descripción:</label>
-	      												<textarea path="txtDescripcion" id="txtDescripcionSolucion" class="form-control" style="resize: none;"></textarea>
-	    											</div>
-	  											</div>
-	  										</div>
+										<div class="row">
+										  <div class="pull-right" style="margin-right:10px;">
+										  	<button id="btn_limpiar_solucion" type="button" class="btn btn-primary">Limpiar</button>
+										    <button id="btn_guardar_solucion" type="button" class="btn btn-primary">Guardar</button>
+										  </div>
 										</div>
-									</div>
-									
-									<div class="row">
-									  <div class="pull-right" style="margin-right:10px;">
-									    <button id="btn_guardar_solucion" type="button" class="btn btn-primary">Guardar</button>
-									  </div>
-									</div>
-									
-				    				<div>
-					    				<table id="soluciones" class="table table-striped table-bordered" cellspacing="0" width="100%" style="margin-top: 15px;" >
-									        <thead>
-									            <tr>
-									                <th style="width: 100px;" >Nro. Solución</th>
-									                <th>Descripción</th>
-									                <th style="width: 100px;">Prioridad</th>
-									                <th style="width: 100px;">Cant. Uso</th>
-									                <th>Opci&oacute;n</th>
-									            </tr>
-									        </thead>
-									        <tfoot>
-									            <tr>
-									                <th style="width: 100px;" >Nro. Solución</th>
-									                <th>Descripción</th>
-									                <th style="width: 100px;">Prioridad</th>
-									                <th style="width: 100px;">Cant. Uso</th>
-									                <th style="width: 160px;" >Opci&oacute;n</th>
-									            </tr>
-									        </tfoot>
-									        <tbody>
-									        </tbody>
-									    </table>
-				    				</div>
+					    				<div>
+						    				<table id="soluciones" class="table table-striped table-bordered" cellspacing="0" width="100%" style="margin-top: 15px;" >
+										        <thead>
+										            <tr>
+										                <th style="width: 80px;" >Nro. Solución</th>
+										                <th>Descripción</th>
+										                <th style="width: 40px;">Prioridad</th>
+										                <th style="width: 60px;">Cant. Uso</th>
+										                <th style="width: 160px;" >Opci&oacute;n</th>
+										            </tr>
+										        </thead>
+										        <tfoot>
+										            <tr>
+										                <th style="width: 80px;" >Nro. Solución</th>
+										                <th>Descripción</th>
+										                <th style="width: 40px;">Prioridad</th>
+										                <th style="width: 60px;">Cant. Uso</th>
+										                <th style="width: 160px;" >Opci&oacute;n</th>
+										            </tr>
+										        </tfoot>
+										        <tbody>
+										        </tbody>
+										    </table>
+					    				</div>
+							    	</div>	
+							    </div>
+							    <div role="tabpanel" class="tab-pane" id="tabSolucion">
+							    	<input type="hidden" id="idSolucionTmp" />
+							    	<input type="hidden" id="numSecuenciaSolucionSetup" />
+									<div class="panel-body">
+		    							<div class="row">
+		    								<div class="col-md-10">
+		    									<div class="form-horizontal">
+		  											<div class="form-group">
+		    											<label for="tipoSolucion" class="col-sm-2 control-label">Tipo Solucion:</label>
+		    											<div class="col-sm-3">
+		      												<select class="form-control" id="tipoSolucion">
+		                                  						<option value="">Seleccionar</option>
+		                                  						<option value="C">Considereciones</option>
+		                                  						<option value="S">Actualizaciones</option>
+		                              						</select>
+		    											</div>
+		  											</div>
+		  											<div class="form-group">
+		    											<label for="txtGlosa" class="col-sm-2 control-label">Glosa:</label>
+														<div class="col-sm-7">
+		      												<input type="text" id="txtGlosa" class="form-control" style="resize: none;" />
+		    											</div>
+		  											</div>
+		  											<div class="form-group">
+		    											<label for="txtGlosa" class="col-sm-2 control-label">Sustento:</label>
+														<div class="col-sm-7">
+		      												<input type="text" id="txtSustento" class="form-control" style="resize: none;" />
+		    											</div>
+		  											</div>
+		  											<div class="form-group">
+		    											<label for="txtDescripcionSolucionSetup" class="col-sm-2 control-label">Descripción:</label>
+														<div class="col-sm-7">
+		      												<textarea id="txtDescripcionSolucionSetup" class="form-control" style="resize: none;"></textarea>
+		    											</div>
+		  											</div>
+		  											<div class="form-group">
+		    											<label for="txtRuta" class="col-sm-2 control-label">Ruta:</label>
+														<div class="col-sm-7">
+		      												<input id="txtRuta" type="file" name="txtRuta" class="filestyle" data-buttonText="Examinar"  />
+		    											</div>
+		  											</div>
+		  										</div>
+											</div>
+										</div>
+										<div class="row">
+										  <div class="pull-right" style="margin-right:10px;">
+										  	<button id="btn_limpiar_solucion_setup" type="button" class="btn btn-primary">Limpiar</button>
+										    <button id="btn_guardar_solucion_setup" type="button" class="btn btn-primary">Guardar</button>
+										  </div>
+										</div>
+					    				<div>
+						    				<table id="solucionesSetup" class="table table-striped table-bordered" cellspacing="0" width="100%" style="margin-top: 15px;" >
+										        <thead>
+										            <tr>
+										                <th style="width: 50px;" >Nro</th>
+										                <th style="width: 70px;" >Tipo Sol.</th>
+										                <th>Glosa</th>
+										                <th>Sustento</th>
+										                <th>Descripción</th>
+										                <th style="width: 100px;">Anexo</th>
+										                <th style="width: 170px;">Opci&oacute;n</th>
+										            </tr>
+										        </thead>
+										        <tfoot>
+										            <tr>
+										                <th style="width: 50px;" >Nro</th>
+										                <th style="width: 70px;" >Tipo Sol.</th>
+										                <th>Glosa</th>
+										                <th>Sustento</th>
+										                <th>Descripción</th>
+										                <th style="width: 100px;">Anexo</th>
+										                <th style="width: 170px;">Opci&oacute;n</th>
+										            </tr>
+										        </tfoot>
+										        <tbody>
+										        </tbody>
+										    </table>
+					    				</div>
+			  						</div>
 							    
 							    </div>
-							    <div role="tabpanel" class="tab-pane" id="tabSolucion">Solución</div>
 							    <div role="tabpanel" class="tab-pane" id="tabValidacion">Validaciones</div>
 							 </div>
 						</div>

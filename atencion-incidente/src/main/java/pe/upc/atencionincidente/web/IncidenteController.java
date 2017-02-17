@@ -1,5 +1,7 @@
 package pe.upc.atencionincidente.web;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import pe.upc.atencionincidente.model.KbIncidente;
 import pe.upc.atencionincidente.model.KbIncidenteKeyValues;
 import pe.upc.atencionincidente.model.KbSolucion;
+import pe.upc.atencionincidente.model.KbSolucionSetup;
 import pe.upc.atencionincidente.service.IncidenteService;
 import pe.upc.atencionincidente.service.SolicitudService;
 
@@ -155,6 +158,92 @@ public class IncidenteController {
 		String idSolucion = incidenteService.registrarKbSolucion(form);
 
 		data.put("idSolucion", idSolucion);
+
+		return data;
+	}
+	
+	@RequestMapping(value="/solucion/cargar", method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> cargarKbSolucion(@ModelAttribute KbSolucion form){
+		System.out.println("cargarKbSolucion");
+		
+		form.setTipoConsulta("9");
+		List<KbSolucion> soluciones = incidenteService.buscarKbSolucion(form);
+		KbSolucion kbSolucion = soluciones.get(0);
+
+		Map<String,Object> data = new HashMap<String,Object>();		
+		data.put("solucion",  kbSolucion);
+
+		return data;
+	}
+	
+	@RequestMapping(value="/solucion/eliminar", method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> eliminarKbSolucion(@ModelAttribute KbSolucion form){
+		System.out.println("eliminarKbSolucion");
+		
+		incidenteService.eliminarKbSolucion(form);
+
+		Map<String,Object> data = new HashMap<String,Object>();		
+		data.put("mensaje",  "ok");
+
+		return data;
+	}
+	
+	@RequestMapping(value="/solucionSetup/buscar", method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> buscarKbSolucionSeup(@ModelAttribute KbSolucionSetup form){
+		System.out.println("buscarKbSolucionSeup");
+		
+		form.setTipoConsulta("3");
+		List<KbSolucionSetup> solucionesSetup = incidenteService.buscarKbSolucionSetup(form);
+
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("solucionesSetup",  solucionesSetup);
+
+		return data;
+	}
+	
+	@RequestMapping(value="/solucionSetup", method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> registrarKbSolucionSetup(@ModelAttribute KbSolucionSetup form){
+		System.out.println("registrarKbSolucionSetup");
+		Map<String,Object> data = new HashMap<String,Object>();
+	
+		form.setUsuarioAdicion("ADMIN");
+		if(form.getTxtRuta() != null && !form.getTxtRuta().equals("")){
+			Path p = Paths.get(form.getTxtRuta());
+			String file = p.getFileName().toString();
+			form.setTxtAnexo(file);
+		}
+		if(form.getTxtAnexo() == null){
+			form.setTxtAnexo("");
+		}
+		String nunSecuencia = incidenteService.registrarKbSolucionSetup(form);
+
+		data.put("numSecuencia", nunSecuencia);
+
+		return data;
+	}
+	
+	@RequestMapping(value="/solucionSetup/cargar", method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> cargarKbSolucionSetup(@ModelAttribute KbSolucionSetup form){
+		System.out.println("cargarKbSolucionSetup");
+		
+		form.setTipoConsulta("10");
+		List<KbSolucionSetup> soluciones = incidenteService.buscarKbSolucionSetup(form);
+		KbSolucionSetup kbSolucionSetup = soluciones.get(0);
+
+		Map<String,Object> data = new HashMap<String,Object>();		
+		data.put("solucionSetup",  kbSolucionSetup);
+
+		return data;
+	}
+	
+	@RequestMapping(value="/solucionSetup/eliminar", method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> eliminarKbSolucionSetup(@ModelAttribute KbSolucionSetup form){
+		System.out.println("eliminarKbSolucionSetup");
+		
+		incidenteService.eliminarKbSolucionSetup(form);
+
+		Map<String,Object> data = new HashMap<String,Object>();		
+		data.put("mensaje",  "ok");
 
 		return data;
 	}
