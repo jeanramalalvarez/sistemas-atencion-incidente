@@ -1,39 +1,44 @@
 var incidenteForm;
 
 $(document).ready(function() {
-   
-	var parametros = null;
-	//parametros: {idIncidenteBase: "2"},
 	
     incidenteForm = {
-    		ini : true,
-    		incidente:	function(){  return  $("#idIncidenteBase").val(); },
-    		tipoSolicitud:	function(){  return  $("#tipoSolicitud").val(); },
-    		sistema:	function(){  return  $("#sistema").val(); } ,
-    		proceso:	function(){  return  $("#proceso").val(); },
-    		subProceso:	function(){  return  $("#subProceso").val(); },
+    		ini : 					true,
+    		incidente:				function(){  return  $("#idIncidenteBase").val(); },
+    		tipoSolicitud:			function(){  return  $("#tipoSolicitud").val(); },
+    		sistema:				function(){  return  $("#sistema").val(); } ,
+    		proceso:				function(){  return  $("#proceso").val(); },
+    		subProceso:				function(){  return  $("#subProceso").val(); },
     		
-    		secuencia:	function(){  return  $("#txtSecuencia").val(); },
-    		descripcion:	function(){  return  $("#txtDescripcion").val(); },
-    		flagResolucion:	function(){  return  $("#flgResolucion").prop("checked")==true?"S":"N"; },
+    		secuencia:				function(){  return  $("#txtSecuencia").val(); },
+    		descripcion:			function(){  return  $("#txtDescripcion").val(); },
+    		flagResolucion:			function(){  return  $("#flgResolucion").prop("checked")==true?"S":"N"; },
     		
-    		solucion:	function(){  return  $("#idSolucion").val(); },
-    		prioridad:	function(){  return  $("#txtPrioridad").val(); },
+    		solucion:				function(){  return  $("#idSolucion").val(); },
+    		nroSolucion:			function(){  return  $("#txtNroSolucion").val(); },
+    		prioridad:				function(){  return  $("#txtPrioridad").val(); },
     		descripcionSolucion:	function(){  return  $("#txtDescripcionSolucion").val(); },
     		
     		url:{
     			form:"/atencion-incidente/incidente"
     		},
-    		btnGuardar:$("#btn_guardar"),
-    		
     		urlCargar:{
     			form:"/atencion-incidente/incidente/cargar"
     		},
+    		btnGuardar:$("#btn_guardar"),
+    		btnLimpiar:$("#btn_limpiar"),
     		
     		urlSolucion:{
     			form:"/atencion-incidente/incidente/solucion"
     		},
+    		urlCargarSolucion:{
+    			form:"/atencion-incidente/incidente/solucion/cargar"
+    		},
+    		urlEliminarSolucion:{
+    			form:"/atencion-incidente/incidente/solucion/eliminar"
+    		},
     		btnGuardarSolucion:$("#btn_guardar_solucion"),
+    		btnLimpiarSolucion:$("#btn_limpiar_solucion"),
     }
     
     incidenteForm.tbIncidentes = $('#incidentes');
@@ -54,7 +59,7 @@ $(document).ready(function() {
     
     incidenteForm.getParamsSolucion = function() {
     	return {
-    			idSolucion: 		"",
+    			idSolucion: 		incidenteForm.solucion(),
     			idIncidenteBase:	incidenteForm.incidente(),
     			txtDescripcion:		incidenteForm.descripcionSolucion(),
     			nuSecuencia: 		null,
@@ -64,58 +69,38 @@ $(document).ready(function() {
     };
     
     incidenteForm.limpiar = function(){
-    	$("#tipoSolicitud").val("");
-    	$("#sistema").val("");
-    	$("#proceso").val("");
-    	$("#subProceso").val("");
-    	$("#tipoSolicitud").focus();
+    	$("#idIncidenteBase").val("");
+    	$("#txtSecuencia").val("");
+    	$("#txtDescripcion").val("");
+    	$("#flgResolucion").prop("checked", false);
+    	//$("#tipoSolicitud").focus();
     }
     
     incidenteForm.validacion = function(){
     	
-    	if ( incidenteForm.tipoSolicitud() != "" )
-    	{
-    		return true
+    	if ( incidenteForm.tipoSolicitud() == "" ){
+    		return false;
     	}
     	
-    	if ( incidenteForm.sistema() != "" )
-    	{
-    		return true
+    	if ( incidenteForm.sistema() == "" ){
+    		return false
     	}
     	
-    	if ( incidenteForm.proceso() != "" )
-    	{
-    		return true
+    	if ( incidenteForm.proceso() == "" ){
+    		return false
     	}
     	
-    	if ( incidenteForm.subProceso() != "" )
-    	{
-    		return true
+    	if ( incidenteForm.subProceso() == "" ){
+    		return false
     	}
     	
-    	return false;
-    }
-    
-    incidenteForm.validacionRegistro = function(){
-    	
-    	if ( incidenteForm.descripcion() != "" )
-    	{
-    		return true
-    	}
-    	
-    	/*if ( incidenteForm.flagResolucion() != "" )
-    	{
-    		return true
-    	}*/
-    	
-    	return false;
+    	return true;
     }
     
     incidenteForm.btn_buscarIncidente = function() {
     	
     	if (!incidenteForm.validacion()){
-    		
-    		alert("Debe seleccionar por lo menos un filtro");
+    		alert("Debe seleccionar los filtro.");
     		return false;
     	}
     	
@@ -164,59 +149,54 @@ $(document).ready(function() {
 
     );
     
+    incidenteForm.validacionRegistroIncidente = function(){
+    	
+    	if (incidenteForm.descripcion() == ""){
+    		return false;
+    	}
+    	return true;
+    }
     
-    incidenteForm.processForm = function(data){
-		
-		//var tipo = nuevaSolicitud.form.tipoSolicitud.val();
-		//var fn = "sendFormTipo" + tipo;
-		
-    	incidenteForm.btnGuardar.attr("disabled", true);
-
-		$.post(incidenteForm.url.form, data, function(rsp){
-			
-				//nuevaSolicitud.setIdSolicitud(rsp.idSolicitud,tipo);
-				
-				//if(rsp.estado == 0){
-					incidenteForm.btnGuardar.attr("disabled", false);
-					incidenteForm.btn_buscarIncidente();
-					$("#txtDescripcion").val("");
-					$("#flgResolucion").prop("checked", false); 
-					//alert(rsp.mensaje);
-					//$("#descripcion").focus();
-				//}
-		},'json')
-	}
+    incidenteForm.btnLimpiar.on("click", incidenteForm.limpiar);
     
     incidenteForm.btnGuardar.on("click",function(){
 
 		if(!incidenteForm.validacion()){
+			alert("Debe seleccionar los campos.");
 			return false;
 		}
 		
-		if(!incidenteForm.validacionRegistro()){
+		if(!incidenteForm.validacionRegistroIncidente()){
+			alert("Debe ingresar por lo menos una descripcion.");
 			return false;
 		}
 		
-		if( !confirm("Esta seguro de guardar el incidente?") ){
-
+		if( !confirm("Esta seguro de guardar el incidente") ){
 			return false;
 		}
-		
-		//var	descripcionSol = $("#descripcion").val();
-		
-		//$("#descripcionSol").text(descripcionSol);
-		//$("#descripcionSol").val(descripcionSol);
 
 		var data = incidenteForm.getParams();
-		console.log(data);
-		incidenteForm.processForm(data);
+		//console.log(data);
+		incidenteForm.registrarIncidente(data);
 
 	});
+    
+    incidenteForm.registrarIncidente = function(data){
+		
+    	incidenteForm.btnGuardar.attr("disabled", true);
+
+		$.post(incidenteForm.url.form, data, function(rsp){
+			incidenteForm.btnGuardar.attr("disabled", false);
+			incidenteForm.btn_buscarIncidente();
+			incidenteForm.limpiar();
+			//alert(rsp.mensaje);
+		},'json')
+	}
     
     $(document).on('click', '.btn_cargar', function(){
     	var data = {idIncidenteBase: $(this).attr("data-id")};
     	incidenteForm.cargarIncidente(data);
-   });
+    });
     
     incidenteForm.cargarIncidente = function(data){
 		$.post(incidenteForm.urlCargar.form, data, function(rsp){
@@ -230,7 +210,7 @@ $(document).ready(function() {
     
     $(document).on('click', '.btn_soluciones', function(){
     	incidenteForm.buscarSolucion($(this).attr("data-id"));
-   });
+    });
     
     incidenteForm.buscarSolucion = function(data){
     	$("#contentSolucion").css("display", "block");
@@ -258,11 +238,6 @@ $(document).ready(function() {
                         data: incidenteForm.getParamsSolucion,
                         //dataSrc: 'data'
                         dataSrc: function(json){
-                        	console.log(json);
-                        	/*if(json.secuencia != undefined && json.secuencia != null && json.secuencia != ""){
-                        		console.log(json.secuencia);
-                        		$("#txtSecuencia").val(json.secuencia)
-                        	}*/
                         	return json.soluciones
                         }
                 },
@@ -273,60 +248,96 @@ $(document).ready(function() {
             		{ data: 'nuVecesUso',"orderable": false },
             		{ data: 'opcion',"orderable": false ,
                       render:function(data, type, row){
-                    	 var btnEvaluar = '<button class="optBtn btn_cargar" style="width: 70px; float: left; margin-right: 8px;" data-id="' + row.idSolucion + '" >Eliminar</button>';
-                    	 btnEvaluar += '<button class="optBtn btn_cargar" style="width: 70px; float: left; margin-right: 8px;" data-id="' + row.idSolucion + '" >Modificar</button>';
+                    	 var btnEvaluar = '<button class="optBtn btn_eliminar_solucion" style="width: 70px; float: left; margin-right: 8px;" data-id="' + row.idSolucion + '" >Eliminar</button>';
+                    	 btnEvaluar += '<button class="optBtn btn_cargar_solucion" style="width: 70px; float: left; margin-right: 8px;" data-id="' + row.idSolucion + '" >Modificar</button>';
                     	 return btnEvaluar;
                       }
             		}
         		]
         	}
 
-        );
+    );
     
-    incidenteForm.processFormSolucion = function(data){
-		
-		//var tipo = nuevaSolicitud.form.tipoSolicitud.val();
-		//var fn = "sendFormTipo" + tipo;
+    incidenteForm.limpiarSolucion = function(){
+    	$("#idSolucion").val("");
+    	$("#txtNroSolucion").val("");
+    	$("#txtPrioridad").val("");
+    	$("#txtDescripcionSolucion").val("");
+    }
+    
+    incidenteForm.validacionRegistroSolucion = function(){
+    	
+    	if ( incidenteForm.descripcionSolucion() == "" ){
+    		return false;
+    	}
+    	
+    	if ( incidenteForm.prioridad() == "" ){
+    		return false;
+    	}
+    	
+    	return true;
+    }
+    
+    incidenteForm.btnLimpiarSolucion.on("click", incidenteForm.limpiarSolucion);
+    
+    incidenteForm.btnGuardarSolucion.on("click",function(){
+
+		if(!incidenteForm.validacionRegistroSolucion()){
+			alert("Debe ingresar una descripcion y una prioridad.");
+			return false;
+		}
+
+		if( !confirm("Esta seguro de guardar la solucion") ){
+			return false;
+		}
+
+		var data = incidenteForm.getParamsSolucion();
+		//console.log(data);
+		incidenteForm.registrarSolucion(data);
+
+	});
+    
+    incidenteForm.registrarSolucion = function(data){
 		
     	incidenteForm.btnGuardarSolucion.attr("disabled", true);
 
 		$.post(incidenteForm.urlSolucion.form, data, function(rsp){
-			
-				//nuevaSolicitud.setIdSolicitud(rsp.idSolicitud,tipo);
-				
-				//if(rsp.estado == 0){
-					incidenteForm.btnGuardarSolucion.attr("disabled", false);
-					incidenteForm.buscarSolucion($("#idIncidenteBase").val());
-				//}
+			incidenteForm.btnGuardarSolucion.attr("disabled", false);
+			incidenteForm.buscarSolucion($("#idIncidenteBase").val());
+			incidenteForm.limpiarSolucion();
 		},'json')
 	}
     
-    incidenteForm.btnGuardarSolucion.on("click",function(){
-    	/*
-		if(!incidenteForm.validacion()){
+    $(document).on('click', '.btn_cargar_solucion', function(){
+    	var data = {idSolucion: $(this).attr("data-id")};
+    	incidenteForm.cargarSolucion(data);
+    });
+    
+    incidenteForm.cargarSolucion = function(data){
+		$.post(incidenteForm.urlCargarSolucion.form, data, function(rsp){
+			$("#idSolucion").val(rsp.solucion.idSolucion);
+			$("#txtNroSolucion").val(rsp.solucion.nuSecuencia);
+    		$("#txtPrioridad").val(rsp.solucion.nuPrioridad);
+    		$("#txtDescripcionSolucion").val(rsp.solucion.txtDescripcion);
+				
+		},'json')
+	}
+    
+    $(document).on('click', '.btn_eliminar_solucion', function(){
+    	
+    	if( !confirm("Esta seguro de eliminar la solucion") ){
 			return false;
 		}
-		
-		if(!incidenteForm.validacionRegistro()){
-			return false;
-		}
-		
-		if( !confirm("Esta seguro de guardar el incidente?") ){
-
-			return false;
-		}
-		*/
-		//var	descripcionSol = $("#descripcion").val();
-		
-		//$("#descripcionSol").text(descripcionSol);
-		//$("#descripcionSol").val(descripcionSol);
-
-		var data = incidenteForm.getParamsSolucion();
-		console.log(data);
-		incidenteForm.processFormSolucion(data);
-
-	});
-
+    	
+    	var data = {idSolucion: $(this).attr("data-id")};
+    	incidenteForm.eliminarSolucion(data);
+    });
+    
+    incidenteForm.eliminarSolucion = function(data){
+		$.post(incidenteForm.urlEliminarSolucion.form, data, function(rsp){
+			incidenteForm.buscarSolucion($("#idIncidenteBase").val());
+		},'json')
+	}
 
     /*------------------------------------------------------------------*/
     
@@ -403,10 +414,8 @@ $(document).ready(function() {
 		},'json')
 		
 	});
-    
-    
-    $("#btn_buscarIncidente").on("click",incidenteForm.btn_buscarIncidente);
-    $("#btn_limpiarConsulta").on("click",incidenteForm.limpiar);
+	
+	$("#btn_buscarIncidente").on("click", incidenteForm.btn_buscarIncidente);
     /*------------------------------------------------------*/
     
 } );

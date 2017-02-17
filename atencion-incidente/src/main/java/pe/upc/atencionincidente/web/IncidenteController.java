@@ -159,6 +159,32 @@ public class IncidenteController {
 		return data;
 	}
 	
+	@RequestMapping(value="/solucion/cargar", method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> cargarKbSolucion(@ModelAttribute KbSolucion form){
+		System.out.println("cargarKbSolucion");
+		
+		form.setTipoConsulta("9");
+		List<KbSolucion> soluciones = incidenteService.buscarKbSolucion(form);
+		KbSolucion kbSolucion = soluciones.get(0);
+
+		Map<String,Object> data = new HashMap<String,Object>();		
+		data.put("solucion",  kbSolucion);
+
+		return data;
+	}
+	
+	@RequestMapping(value="/solucion/eliminar", method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> eliminarKbSolucion(@ModelAttribute KbSolucion form){
+		System.out.println("eliminarKbSolucion");
+		
+		incidenteService.eliminarKbSolucion(form);
+
+		Map<String,Object> data = new HashMap<String,Object>();		
+		data.put("mensaje",  "ok");
+
+		return data;
+	}
+	
 	@RequestMapping(value="/getListProcesos", method=RequestMethod.GET )
     public @ResponseBody Map<String,String> listProcesos(@RequestParam("idSistema") String idSistema){
 		List<Map<String, Object>> lstPro = solicitudService.getListProcesos(idSistema);

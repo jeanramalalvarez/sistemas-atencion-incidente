@@ -25,4 +25,6 @@ public interface IncidenteService {
 	
 	String registrarKbSolucion(KbSolucion form);
 	
+	void eliminarKbSolucion(KbSolucion form);
+	
 }

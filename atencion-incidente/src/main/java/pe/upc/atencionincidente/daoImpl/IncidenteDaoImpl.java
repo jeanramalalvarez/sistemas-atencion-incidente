@@ -233,7 +233,7 @@ public class IncidenteDaoImpl implements IncidenteDAO {
 		inParamMap.put("idSistema", null);
 		inParamMap.put("idProceso", null);
 		inParamMap.put("idSubproceso", null);
-		inParamMap.put("idSolucion", null);
+		inParamMap.put("idSolucion", form.getIdSolucion());
 		inParamMap.put("idTipoSolucion", null);
 		inParamMap.put("numSecuencia", null);
 		System.out.println("consultarKbIncidente - INPUT: " + inParamMap);
@@ -291,5 +291,16 @@ public class IncidenteDaoImpl implements IncidenteDAO {
 		return String.valueOf(map.get("newIdSolucion"));
 	}
 
+	@Override
+	public void eliminarKbSolucion(KbSolucion form) {
+		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("eliminarKbSolucion");
+		
+		Map<String, Object> inParamMap = new HashMap<String, Object>();
+		inParamMap.put("idSolucion", form.getIdSolucion());
+		
+		SqlParameterSource in = new MapSqlParameterSource(inParamMap);
+		
+		simpleJdbcCall.execute(in);
+	}
 
 }

@@ -25,4 +25,6 @@ public interface IncidenteDAO {
 	
 	String registrarKbSolucion(KbSolucion form);
 	
+	void eliminarKbSolucion(KbSolucion form);
+	
 }

@@ -157,6 +157,7 @@
 								</div><!-- fin row-->
 								<div class="row">
 								  <div class="pull-right" style="margin-right:10px;">
+								  	<button id="btn_limpiar" type="button" class="btn btn-primary">Limpiar</button>
 								    <button id="btn_guardar" type="button" class="btn btn-primary">Guardar</button>
 								  </div>
 								</div>
@@ -204,10 +205,10 @@
 	  											<div class="form-group">
 	    											<div class="col-sm-8">
 	    												<label for="txtNroSolucion">Nro Solución:</label>
-	      												<input path="nuSolucion" id="txtNroSolucion" disabled="true" class="form-control" style="" />
+	      												<input id="txtNroSolucion" disabled="disabled" class="form-control" style="" />
 	      												
 	      												<label for="txtNroSolucion">Prioridad:</label>
-	      												<input path="prioridad" id="txtPrioridad" class="form-control" style="" />
+	      												<input id="txtPrioridad" class="form-control" style="" />
 	    											</div>
 	  											</div>
 	  										</div>
@@ -217,7 +218,7 @@
 	  											<div class="form-group">
 	    											<div class="col-sm-14">
 	    											<label for="txtDescripcion">Descripción:</label>
-	      												<textarea path="txtDescripcion" id="txtDescripcionSolucion" class="form-control" style="resize: none;"></textarea>
+	      												<textarea id="txtDescripcionSolucion" class="form-control" style="resize: none;"></textarea>
 	    											</div>
 	  											</div>
 	  										</div>
@@ -226,6 +227,7 @@
 									
 									<div class="row">
 									  <div class="pull-right" style="margin-right:10px;">
+									  	<button id="btn_limpiar_solucion" type="button" class="btn btn-primary">Limpiar</button>
 									    <button id="btn_guardar_solucion" type="button" class="btn btn-primary">Guardar</button>
 									  </div>
 									</div>

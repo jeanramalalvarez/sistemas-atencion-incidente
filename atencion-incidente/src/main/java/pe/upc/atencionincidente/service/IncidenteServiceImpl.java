@@ -57,4 +57,9 @@ public class IncidenteServiceImpl implements IncidenteService {
 		return incidenteDAO.registrarKbSolucion(form);
 	}
 
+	@Override
+	public void eliminarKbSolucion(KbSolucion form) {
+		incidenteDAO.eliminarKbSolucion(form);
+	}
+
 }
