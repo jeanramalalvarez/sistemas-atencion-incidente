@@ -10,7 +10,9 @@ import pe.upc.atencionincidente.dao.IncidenteDAO;
 import pe.upc.atencionincidente.model.KbIncidente;
 import pe.upc.atencionincidente.model.KbIncidenteKeyValues;
 import pe.upc.atencionincidente.model.KbSolucion;
+import pe.upc.atencionincidente.model.KbSolucionCheck;
 import pe.upc.atencionincidente.model.KbSolucionSetup;
+import pe.upc.atencionincidente.model.KbSolucionSetupCheck;
 
 @Service
 public class IncidenteServiceImpl implements IncidenteService {
@@ -47,6 +49,11 @@ public class IncidenteServiceImpl implements IncidenteService {
 	public List<KbIncidente> buscarKbIncidenteValorClave(KbIncidente form) {
 		return incidenteDAO.buscarKbIncidenteValorClave(form);
 	}
+	
+	@Override
+	public void eliminarKbIncidenteKeyValues(KbIncidenteKeyValues form) {
+		incidenteDAO.eliminarKbIncidenteKeyValues(form);
+	}
 
 	@Override
 	public List<KbSolucion> buscarKbSolucion(KbSolucion form) {
@@ -76,6 +83,21 @@ public class IncidenteServiceImpl implements IncidenteService {
 	@Override
 	public void eliminarKbSolucionSetup(KbSolucionSetup form) {
 		incidenteDAO.eliminarKbSolucionSetup(form);
+	}
+
+	@Override
+	public List<KbSolucionCheck> buscarKbSolucionCheck(KbSolucionCheck form) {
+		return incidenteDAO.buscarKbSolucionCheck(form);
+	}
+
+	@Override
+	public String registrarKbSolucionSetupCheck(KbSolucionSetupCheck form) {
+		return incidenteDAO.registrarKbSolucionSetupCheck(form);
+	}
+
+	@Override
+	public void eliminarKbSolucionSetupCheck(KbSolucionSetupCheck form) {
+		incidenteDAO.eliminarKbSolucionSetupCheck(form);
 	}
 
 }

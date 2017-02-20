@@ -337,7 +337,52 @@
 			  						</div>
 							    
 							    </div>
-							    <div role="tabpanel" class="tab-pane" id="tabValidacion">Validaciones</div>
+							    <div role="tabpanel" class="tab-pane" id="tabValidacion">
+							    	<input type="hidden" id="idTipoSolucionTmp" />
+							    	<input type="hidden" id="numSecuenciaTmp" />
+									<div class="panel-body">
+		    							<div class="row" style="padding-left: 178px;" >
+		    								<div class="col-md-3">
+		    									<div class="form-horizontal">
+		  											<div class="form-group">
+		    											<div class="col-sm-10">
+		    											<label for="validaciones" class="col-sm-10 control-label">Validaciones:</label>
+		      												<select class="form-control" id="validaciones" multiple="multiple" style="width: 200px; height: 250px; font-size: 10px;">
+		                              						</select>
+		    											</div>
+		  											</div>
+		  										</div>
+											</div>
+											<div class="col-md-2">
+		    									<div class="form-horizontal">
+		  											<div class="form-group">
+		    											<div class="col-sm-5" style="padding-left: 32px;padding-top: 81px;" >
+		    											<button id="btn_agregarSolucionCheck" type="button" class="btn btn-primary" style="width: 100px; margin-bottom: 10px;" >Agregar > </button>
+		    											
+		    											<button id="btn_quitarSolucionCheck" type="button" class="btn btn-primary" style="width: 100px;">< Quitar</button>
+		    											</div>
+		  											</div>
+		  										</div>
+		  									</div>
+											<div class="col-md-5">
+		    									<div class="form-horizontal">
+		  											<div class="form-group">
+		    											<div class="col-sm-9">
+		    											<label for="validacionesSolucionSetup" class="col-sm-12 control-label">Validaciones por Actualización:</label>
+		      												<select class="form-control" id="validacionesSolucionSetup" multiple="multiple" style="width: 200px; height: 250px; font-size: 10px;">
+		                              						</select>
+		    											</div>
+		  											</div>
+		  										</div>
+											</div>
+										</div><!-- fin row-->
+										<div class="row">
+										  <div class="pull-right" style="margin-right:10px;">
+										    <button id="btn_guardar_solucionSetupCheck" type="button" class="btn btn-primary">Guardar</button>
+										  </div>
+										</div>
+							    	</div>
+							    </div>
 							 </div>
 						</div>
 					</div>

@@ -6,7 +6,7 @@ $(document).ready(function() {
     		ini : true,
     		
     		idIncidenteBase:	function(){  return  $("#idIncidenteBase").val(); } ,
-    		valoresClaveIncidente:	function(){  return getValoresClaveIncidente();  } ,
+    		valoresClaveIncidente:	function(){  return incidenteValorClaveFomr.getValoresClaveIncidente();  } ,
     		
     		urlValorClave:{
     			form:"/atencion-incidente/incidente/agregarValorClave"
@@ -14,10 +14,13 @@ $(document).ready(function() {
     		btnGuardarValorClave:$("#btn_guardar_valor_clave"),
     }
     
-    function getValoresClaveIncidente(){
+    incidenteValorClaveFomr.getValoresClaveIncidente = function() {
     	var cadena = "";
-    	$.each($("#valoresClaveIncidente").val(), function( index, value ) {
+    	/*$.each($("#valoresClaveIncidente").val(), function( index, value ) {
     		cadena +=value +",";
+    	});*/
+    	$.each($('#valoresClaveIncidente option'), function( index, value ) {
+    		cadena +=value.value +",";
     	});
     	return cadena;
     }
@@ -46,7 +49,7 @@ $(document).ready(function() {
 		
     	incidenteValorClaveFomr.btnGuardarValorClave.attr("disabled", true);
 
-		$.post(incidenteValorClaveFomr.urlValorClave.form,data,function(rsp){
+		$.post(incidenteValorClaveFomr.urlValorClave.form, data, function(rsp){
 			
 				//nuevaSolicitud.setIdSolicitud(rsp.idSolicitud,tipo);
 				
@@ -123,7 +126,7 @@ $(document).ready(function() {
 				idProceso:$(this).val()
 		}
 		
-		$.get("/atencion-incidente/incidente/getListSubProcesos",data,function(rsp){
+		$.get("/atencion-incidente/incidente/getListSubProcesos", data, function(rsp){
 			
 			//console.log("procesos")
 			//console.log(rsp)

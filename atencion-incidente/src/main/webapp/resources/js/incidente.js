@@ -27,6 +27,10 @@ $(document).ready(function() {
     		descripcionSolucionSetup:	function(){  return  $("#txtDescripcionSolucionSetup").val(); },
     		ruta:					function(){  return  $("#txtRuta").val(); },
     		
+    		tipoSolucionTmp:		function(){  return  $("#idTipoSolucionTmp").val(); },
+    		secuenciaTmp:			function(){  return  $("#numSecuenciaTmp").val(); },
+    		solucionesSetupCheck:	function(){  return incidenteForm.getSolucionesSetupCheck();  } ,
+    		
     		url:{
     			form:"/atencion-incidente/incidente"
     		},
@@ -61,6 +65,17 @@ $(document).ready(function() {
     		},
     		btnGuardarSolucionSetup:$("#btn_guardar_solucion_setup"),
     		btnLimpiarSolucionSetup:$("#btn_limpiar_solucion_setup"),
+    		
+    		urlSolucionSetupCheck:{
+    			form:"/atencion-incidente/incidente/solucionSetupCheck"
+    		},
+    		urlBuscarSolucionCheck:{
+    			form:"/atencion-incidente/incidente/solucionCheck/buscar"
+    		},
+    		btnGuardarSolucionSetupCheck:$("#btn_guardar_solucionSetupCheck"),
+    		
+    		selectValidaciones: $('#validaciones'),
+    		selectValidacionesSolucionSetup: $('#validacionesSolucionSetup'),
     }
     
     incidenteForm.tbIncidentes = $('#incidentes');
@@ -99,6 +114,26 @@ $(document).ready(function() {
     			txtSustento: 		incidenteForm.sustento(),
     			txtDescripcion: 	incidenteForm.descripcionSolucionSetup(),
     			txtRuta: 			incidenteForm.ruta(),
+    	};
+    };
+    
+    incidenteForm.getSolucionesSetupCheck = function() {
+    	var cadena = "";
+//    	$.each($("#validacionesSolucionSetup").val(), function( index, value ) {
+//    		cadena +=value +",";
+//    	});
+    	$.each($('#validacionesSolucionSetup option'), function( index, value ) {
+    		cadena +=value.value +",";
+    	});
+    	return cadena;
+    }
+    
+    incidenteForm.getParamsSolucionSetupCheck = function() {
+    	return {
+    			idSolucion: 		 	incidenteForm.solucionTmp(),
+    			idTipoSolucion: 	 	incidenteForm.tipoSolucionTmp(),
+    			numSecuencia: 		 	incidenteForm.secuenciaTmp(),
+    			solucionesSetupCheck: 	incidenteForm.solucionesSetupCheck(),
     	};
     };
     
@@ -430,6 +465,8 @@ $(document).ready(function() {
                       render:function(data, type, row){
                     	 var btnEvaluar = '<button class="optBtn btn_eliminar_solucion_setup" style="width: 70px; float: left; margin-right: 8px;" data-id="' + row.numSecuencia + '" >Eliminar</button>';
                     	 btnEvaluar += '<button class="optBtn btn_cargar_solucion_setup" style="width: 70px; float: left; margin-right: 8px;" data-id="' + row.numSecuencia + '" >Modificar</button>';
+                    	 btnEvaluar += '<input type="hidden" name="numSecuenciaSetup" value="' + row.numSecuencia + '" />';
+                    	 btnEvaluar += '<input type="hidden" name="idTipoSolucion" value="' + row.idTipoSolucion + '" />';
                     	 return btnEvaluar;
                       }
             		}
@@ -541,7 +578,79 @@ $(document).ready(function() {
 		},'json')
 	}
     
+    $(document).on('click', "#solucionesSetup tbody tr", function(e){
+    	if(e.target.nodeName == "TD"){
+    		//var nuSecuenciaSetup = $(this).children().last().children()[2].val();
+    		//var idTippoSolucion = $(this).children().last().children()[3].val();
+    		var numSecuenciaSetup = $(this).children().last().find("input[type='hidden']")[0].value;
+    		var idTipoSolucion = $(this).children().last().find("input[type='hidden']")[1].value;
+    		var data = {idSolucion: $("#idSolucionTmp").val(), idTipoSolucion: idTipoSolucion, numSecuencia: numSecuenciaSetup};
+    		incidenteForm.buscarSolucionCheck(data);
+    		$("#idTipoSolucionTmp").val(idTipoSolucion);
+    		$("#numSecuenciaTmp").val(numSecuenciaSetup);
+    		$('.nav-tabs a[href="#tabValidacion"]').tab('show');
+    	}
+    });
+    
     //Solucion Setup - Fin
+    
+    //Solucion Check - Inicio
+    
+    incidenteForm.buscarSolucionCheck = function(data){
+		$.post(incidenteForm.urlBuscarSolucionCheck.form, data, function(rsp){
+			incidenteForm.selectValidaciones.find('option').remove();
+			$.each(rsp.solucionesCheck, function(key, value){
+				incidenteForm.selectValidaciones.append('<option value=' + value.idSolucionCh + '>' + value.txtGlosa + '</option>');
+			});
+			
+			incidenteForm.selectValidacionesSolucionSetup.find('option').remove();
+			$.each(rsp.solucionesSetupCheck, function(key, value){
+				incidenteForm.selectValidacionesSolucionSetup.append('<option value=' + value.idSolucionCh + '>' + value.txtGlosa + '</option>');
+			});
+			
+		},'json')
+	}
+    
+    $("#btn_agregarSolucionCheck").on("click", function(){
+    	!$('#validaciones option:selected').remove().appendTo('#validacionesSolucionSetup');
+    });
+    
+    $("#btn_quitarSolucionCheck").on("click", function(){
+    	!$('#validacionesSolucionSetup option:selected').remove().appendTo('#validaciones');
+    });
+    
+    incidenteForm.btnGuardarSolucionSetupCheck.on("click",function(){
+    	/*
+    	if ( incidenteForm.solucionTmp() == "" ){
+    		alert("Debe seleccionar una solucion.");
+    		return;
+    	}
+
+		if(!incidenteForm.validacionRegistroSolucionSetup()){
+			alert("Debe ingresar los datos solicitados.");
+			return false;
+		}
+    	 */
+		if( !confirm("Esta seguro de guardar las validaciones") ){
+			return false;
+		}
+
+		var data = incidenteForm.getParamsSolucionSetupCheck();
+		//console.log(data);
+		incidenteForm.registrarSolucionSetupCheck(data);
+
+	});
+    
+    incidenteForm.registrarSolucionSetupCheck = function(data){
+		
+    	incidenteForm.btnGuardarSolucionSetupCheck.attr("disabled", true);
+
+		$.post(incidenteForm.urlSolucionSetupCheck.form, data, function(rsp){
+			incidenteForm.btnGuardarSolucionSetupCheck.attr("disabled", false);
+		},'json')
+	}
+    
+    //Solucion Check - Fin
 
     $("#sistema").change(function(){
 		

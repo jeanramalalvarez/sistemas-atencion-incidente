@@ -18,7 +18,9 @@ import pe.upc.atencionincidente.dao.IncidenteDAO;
 import pe.upc.atencionincidente.model.KbIncidente;
 import pe.upc.atencionincidente.model.KbIncidenteKeyValues;
 import pe.upc.atencionincidente.model.KbSolucion;
+import pe.upc.atencionincidente.model.KbSolucionCheck;
 import pe.upc.atencionincidente.model.KbSolucionSetup;
+import pe.upc.atencionincidente.model.KbSolucionSetupCheck;
 
 @SuppressWarnings("unchecked")
 @Repository
@@ -220,6 +222,18 @@ public class IncidenteDaoImpl implements IncidenteDAO {
 			
 		return list;
 	}
+	
+	@Override
+	public void eliminarKbIncidenteKeyValues(KbIncidenteKeyValues form) {
+		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("eliminarKbIncidenteKeyValues");
+		
+		Map<String, Object> inParamMap = new HashMap<String, Object>();
+		inParamMap.put("idIncidenteBase", form.getIdIncidenteBase());
+		
+		SqlParameterSource in = new MapSqlParameterSource(inParamMap);
+		
+		simpleJdbcCall.execute(in);
+	}
 
 	@Override
 	public List<KbSolucion> buscarKbSolucion(KbSolucion form) {
@@ -386,6 +400,89 @@ public class IncidenteDaoImpl implements IncidenteDAO {
 		
 		Map<String, Object> inParamMap = new HashMap<String, Object>();
 		inParamMap.put("idSolucion", form.getIdSolucion());
+		inParamMap.put("numSecuencia", form.getNumSecuencia());
+		
+		SqlParameterSource in = new MapSqlParameterSource(inParamMap);
+		
+		simpleJdbcCall.execute(in);
+	}
+
+	@Override
+	public List<KbSolucionCheck> buscarKbSolucionCheck(KbSolucionCheck form) {
+		
+		List<KbSolucionCheck> list = new ArrayList<KbSolucionCheck>();
+		
+		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("consultarKbIncidente");
+		
+		Map<String, Object> inParamMap = new HashMap<String, Object>();
+		inParamMap.put("tipo", form.getTipoConsulta());
+		inParamMap.put("idIncidenteBase", null);
+		inParamMap.put("idTipoSolicitud", null);
+		inParamMap.put("idSistema", null);
+		inParamMap.put("idProceso", null);
+		inParamMap.put("idSubproceso", null);
+		inParamMap.put("idSolucion", form.getIdSolucion());
+		inParamMap.put("idTipoSolucion", form.getIdTipoSolucion());
+		inParamMap.put("numSecuencia", form.getNumSecuencia());
+		System.out.println("consultarKbIncidente - INPUT: " + inParamMap);
+		SqlParameterSource in = new MapSqlParameterSource(inParamMap);
+		
+		Map<String, Object> simpleJdbcCallResult = simpleJdbcCall.execute(in);
+		
+		System.out.println("simpleJdbcCallResult");
+		System.out.println(simpleJdbcCallResult);
+		
+		ArrayList<Map<String,Object>> data= (ArrayList<Map<String,Object>>) simpleJdbcCallResult.get("#result-set-1");
+		    
+		data.forEach(row->{
+			
+			KbSolucionCheck sol = new KbSolucionCheck();
+			
+			sol.setIdSolucionCh(String.valueOf(row.get("ID_SOLUCION_CH")));
+			sol.setTxtGlosa(String.valueOf(row.get("TXT_GLOSA")));
+			sol.setTxtPautas(String.valueOf(row.get("TXT_PAUTAS")));
+			sol.setTxtDescripcion(String.valueOf(row.get("TXT_DESCRIPCION")));
+			sol.setTxtAnexo(String.valueOf(row.get("TXT_ANEXO")));
+			sol.setTxtRuta(String.valueOf(row.get("TXT_RUTA")));
+			
+			list.add(sol);
+			
+		});
+		
+		return list;
+	}
+
+	@Override
+	public String registrarKbSolucionSetupCheck(KbSolucionSetupCheck form) {
+		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("registrarKbSolucionSetupCheck");
+		
+		Map<String, Object> inParamMap = new HashMap<String, Object>();
+		inParamMap.put("idSolucion", form.getIdSolucion());
+		inParamMap.put("idTipoSolucion", form.getIdTipoSolucion());
+		inParamMap.put("numSecuencia", form.getNumSecuencia());
+		inParamMap.put("idSolucionCh", form.getIdSolucionCh());
+		inParamMap.put("usuarioAdicion", form.getUsuarioAdicion());
+		
+		SqlParameterSource in = new MapSqlParameterSource(inParamMap);
+		
+		Map<String, Object> simpleJdbcCallResult = simpleJdbcCall.execute(in);
+		
+		ArrayList<Map<String,Object>> data= (ArrayList<Map<String,Object>>) simpleJdbcCallResult.get("#result-set-1");
+		    
+		System.out.println(data);
+		
+		Map<String,Object> map = data.get(0);
+		
+		return String.valueOf(map.get("newIdSolucionCh"));
+	}
+
+	@Override
+	public void eliminarKbSolucionSetupCheck(KbSolucionSetupCheck form) {
+		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("eliminarKbSolucionSetupCheck");
+		
+		Map<String, Object> inParamMap = new HashMap<String, Object>();
+		inParamMap.put("idSolucion", form.getIdSolucion());
+		inParamMap.put("idTipoSolucion", form.getIdTipoSolucion());
 		inParamMap.put("numSecuencia", form.getNumSecuencia());
 		
 		SqlParameterSource in = new MapSqlParameterSource(inParamMap);

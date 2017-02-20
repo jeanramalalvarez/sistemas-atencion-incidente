@@ -21,7 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 import pe.upc.atencionincidente.model.KbIncidente;
 import pe.upc.atencionincidente.model.KbIncidenteKeyValues;
 import pe.upc.atencionincidente.model.KbSolucion;
+import pe.upc.atencionincidente.model.KbSolucionCheck;
 import pe.upc.atencionincidente.model.KbSolucionSetup;
+import pe.upc.atencionincidente.model.KbSolucionSetupCheck;
 import pe.upc.atencionincidente.service.IncidenteService;
 import pe.upc.atencionincidente.service.SolicitudService;
 
@@ -123,13 +125,15 @@ public class IncidenteController {
 		System.out.println("registrarKbIncidenteKeyValues");
 		Map<String,Object> data = new HashMap<String,Object>();
 	
+		incidenteService.eliminarKbIncidenteKeyValues(form);
 		
 		form.setUsuarioAdicion("ADMIN");
-		for (String valor : form.getValoresClaveIncidente().split(",")) {
-			form.setIdKeyValue(valor);
-			String idIncidenteBase = incidenteService.registrarKbIncidenteKeyValues(form);
-			System.out.println(idIncidenteBase);
-		}
+		if(form.getValoresClaveIncidente() != null && !form.getValoresClaveIncidente().equals(""))
+			for (String valor : form.getValoresClaveIncidente().split(",")) {
+				form.setIdKeyValue(valor);
+				String idIncidenteBase = incidenteService.registrarKbIncidenteKeyValues(form);
+				System.out.println(idIncidenteBase);
+			}
 
 		//data.put("idIncidenteBase", idIncidenteBase);
 
@@ -244,6 +248,42 @@ public class IncidenteController {
 
 		Map<String,Object> data = new HashMap<String,Object>();		
 		data.put("mensaje",  "ok");
+
+		return data;
+	}
+	
+	@RequestMapping(value="/solucionCheck/buscar", method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> buscarKbSolucionCheck(@ModelAttribute KbSolucionCheck form){
+		System.out.println("buscarKbSolucionCheck");
+		
+		form.setTipoConsulta("4");
+		List<KbSolucionCheck> solucionesCheck = incidenteService.buscarKbSolucionCheck(form);
+		
+		form.setTipoConsulta("5");
+		List<KbSolucionCheck> solucionesSetupCheck = incidenteService.buscarKbSolucionCheck(form);
+		
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("solucionesCheck",  solucionesCheck);
+		data.put("solucionesSetupCheck",  solucionesSetupCheck);
+		return data;
+	}
+	
+	@RequestMapping(value="/solucionSetupCheck", method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> registrarKbSolucionSetupCheck(@ModelAttribute KbSolucionSetupCheck form){
+		System.out.println("registrarKbSolucionSetupCheck");
+		Map<String,Object> data = new HashMap<String,Object>();
+		
+		incidenteService.eliminarKbSolucionSetupCheck(form);
+		
+		form.setUsuarioAdicion("ADMIN");
+		if(form.getSolucionesSetupCheck() != null && !form.getSolucionesSetupCheck().equals(""))
+			for (String valor : form.getSolucionesSetupCheck().split(",")) {
+				form.setIdSolucionCh(valor);
+				String idSolucionCh = incidenteService.registrarKbSolucionSetupCheck(form);
+				System.out.println(idSolucionCh);
+			}
+
+		//data.put("idIncidenteBase", idIncidenteBase);
 
 		return data;
 	}
