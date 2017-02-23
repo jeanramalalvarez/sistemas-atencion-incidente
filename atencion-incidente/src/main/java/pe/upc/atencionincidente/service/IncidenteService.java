@@ -43,5 +43,5 @@ public interface IncidenteService {
 	String registrarKbSolucionSetupCheck(KbSolucionSetupCheck form);
 	
 	void eliminarKbSolucionSetupCheck(KbSolucionSetupCheck form);
-	
+
 }

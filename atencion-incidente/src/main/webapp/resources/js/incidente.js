@@ -40,7 +40,6 @@ $(document).ready(function() {
     		btnGuardar:$("#btn_guardar"),
     		btnLimpiar:$("#btn_limpiar"),
     		
-    		
     		urlSolucion:{
     			form:"/atencion-incidente/incidente/solucion"
     		},
@@ -51,8 +50,7 @@ $(document).ready(function() {
     			form:"/atencion-incidente/incidente/solucion/eliminar"
     		},
     		btnGuardarSolucion:$("#btn_guardar_solucion"),
-    		btnLimpiarSolucion:$("#btn_limpiar_solucion"),
-    		
+    		btnLimpiarSolucion:$("#btn_limpiar_solucion"),    		
 
     		urlSolucionSetup:{
     			form:"/atencion-incidente/incidente/solucionSetup"
@@ -165,7 +163,7 @@ $(document).ready(function() {
     	
     	return true;
     }
-    
+
     //Incidente - Inicio
     
     incidenteForm.btn_buscarIncidente = function() {
@@ -533,6 +531,8 @@ $(document).ready(function() {
 		incidenteForm.registrarSolucionSetup(data);
 
 	});
+
+    /*------------------------------------------------------------------*/
     
     incidenteForm.registrarSolucionSetup = function(data){
 		

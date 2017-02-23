@@ -43,5 +43,4 @@ public interface IncidenteDAO {
 	String registrarKbSolucionSetupCheck(KbSolucionSetupCheck form);
 	
 	void eliminarKbSolucionSetupCheck(KbSolucionSetupCheck form);
-	
 }
