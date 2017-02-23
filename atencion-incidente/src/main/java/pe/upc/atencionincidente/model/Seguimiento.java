@@ -2,7 +2,7 @@ package pe.upc.atencionincidente.model;
 
 public class Seguimiento {
 	
-	private String tipo;
+	private String tipoConsulta;
 	
 	private String fecInicio;
 	
@@ -10,12 +10,12 @@ public class Seguimiento {
 	
 	private String idAnalista;
 
-	public String getTipo() {
-		return tipo;
+	public String getTipoConsulta() {
+		return tipoConsulta;
 	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
+	
+	public void setTipoConsulta(String tipoConsulta) {
+		this.tipoConsulta = tipoConsulta;
 	}
 
 	public String getFecInicio() {

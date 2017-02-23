@@ -6,19 +6,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.upc.atencionincidente.dao.SeguimientoDAO;
+import pe.upc.atencionincidente.model.Analista;
 import pe.upc.atencionincidente.model.Seguimiento;
 import pe.upc.atencionincidente.model.SeguimientoCarteraAF;
+import pe.upc.atencionincidente.model.SeguimientoCarteraCTI;
 
 @Service
 public class SeguimientoServiceImpl implements SeguimientoService {
 	
 	@Autowired
 	private SeguimientoDAO seguimientoDAO;
-
+	
 	@Override
-	public List<SeguimientoCarteraAF> getCarteraAnalistaFuncional(Seguimiento form) {
-		return seguimientoDAO.getCarteraAnalistaFuncional(form);
+	public List<Analista> getAnalista() {
+		return seguimientoDAO.getAnalista();
 	} 
 
+	@Override
+	public List<SeguimientoCarteraAF> getCarteraAF(Seguimiento form) {
+		return seguimientoDAO.getCarteraAF(form);
+	}
+
+	@Override
+	public List<SeguimientoCarteraCTI> getCarteraCTI(Seguimiento form) {
+		return seguimientoDAO.getCarteraCTI(form);
+	}
 	
 }

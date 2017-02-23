@@ -18,6 +18,7 @@ import pe.upc.atencionincidente.dao.SeguimientoDAO;
 import pe.upc.atencionincidente.model.Analista;
 import pe.upc.atencionincidente.model.Seguimiento;
 import pe.upc.atencionincidente.model.SeguimientoCarteraAF;
+import pe.upc.atencionincidente.model.SeguimientoCarteraCTI;
 
 @SuppressWarnings("unchecked")
 @Repository
@@ -54,14 +55,14 @@ public class SeguimientoDaoImpl implements SeguimientoDAO {
 	}
 
 	@Override
-	public List<SeguimientoCarteraAF> getCarteraAnalistaFuncional(Seguimiento form){
+	public List<SeguimientoCarteraAF> getCarteraAF(Seguimiento form){
 		
 		List<SeguimientoCarteraAF> list = new ArrayList<SeguimientoCarteraAF>();
 		
 		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("listSeguimientoCTI");
 		
 		Map<String, Object> inParamMap = new HashMap<String, Object>();
-		inParamMap.put("tipo", form.getTipo());
+		inParamMap.put("tipo", form.getTipoConsulta());
 		inParamMap.put("fecInicio", form.getFecInicio());
 		inParamMap.put("fecFin", form.getFecFin());
 		inParamMap.put("idAnalista", form.getIdAnalista());
@@ -71,6 +72,7 @@ public class SeguimientoDaoImpl implements SeguimientoDAO {
 		Map<String, Object> simpleJdbcCallResult = simpleJdbcCall.execute(in);
 		
 		ArrayList<Map<String,Object>> data= (ArrayList<Map<String,Object>>) simpleJdbcCallResult.get("#result-set-1");
+		System.out.println(data);
 		    
 		data.forEach(row->{
 			
@@ -78,8 +80,42 @@ public class SeguimientoDaoImpl implements SeguimientoDAO {
 			
 			sol.setAnalistaFunciona(String.valueOf(row.get("analistaFuncional")));
 			sol.setEnProceso(Integer.valueOf(String.valueOf(row.get("enProceso"))));
-			sol.setEnProceso(Integer.valueOf(String.valueOf(row.get("asignados"))));
-			sol.setEnProceso(Integer.valueOf(String.valueOf(row.get("total"))));
+			sol.setAsignado(Integer.valueOf(String.valueOf(row.get("asignados"))));
+			sol.setTotal(Integer.valueOf(String.valueOf(row.get("total"))));
+			
+			list.add(sol);
+			
+		});
+			
+		return list;
+	}
+
+	@Override
+	public List<SeguimientoCarteraCTI> getCarteraCTI(Seguimiento form) {
+		
+		List<SeguimientoCarteraCTI> list = new ArrayList<SeguimientoCarteraCTI>();
+		
+		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("listSeguimientoCTI");
+		
+		Map<String, Object> inParamMap = new HashMap<String, Object>();
+		inParamMap.put("tipo", form.getTipoConsulta());
+		inParamMap.put("fecInicio", form.getFecInicio());
+		inParamMap.put("fecFin", form.getFecFin());
+		inParamMap.put("idAnalista", form.getIdAnalista());
+		System.out.println("listSeguimientoCTI - INPUT: " + inParamMap);
+		SqlParameterSource in = new MapSqlParameterSource(inParamMap);
+		
+		Map<String, Object> simpleJdbcCallResult = simpleJdbcCall.execute(in);
+		
+		ArrayList<Map<String,Object>> data= (ArrayList<Map<String,Object>>) simpleJdbcCallResult.get("#result-set-1");
+		System.out.println(data);
+		    
+		data.forEach(row->{
+			
+			SeguimientoCarteraCTI sol = new SeguimientoCarteraCTI();
+			
+			sol.setEstado(String.valueOf(row.get("estado")));
+			sol.setTotal(Integer.valueOf(String.valueOf(row.get("total"))));
 			
 			list.add(sol);
 			
