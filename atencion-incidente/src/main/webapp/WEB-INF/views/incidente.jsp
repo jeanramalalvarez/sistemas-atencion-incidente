@@ -223,35 +223,12 @@
 		  											</div>
 		  										</div>
 											</div>
-							    
-							    	<div class="row">
-	    								<div class="col-md-2">
-	    									<div class="form-horizontal">
-	  											<div class="form-group">
-	    											<div class="col-sm-8">
-	    												<label for="txtNroSolucion">Nro Solución:</label>
-	      												<input id="txtNroSolucion" disabled="disabled" class="form-control" style="" />
-	      												
-	      												<label for="txtNroSolucion">Prioridad:</label>
-	      												<input id="txtPrioridad" class="form-control" style="" />
-	    											</div>
-	  											</div>
-	  										</div>
 										</div>
 										<div class="row">
 										  <div class="pull-right" style="margin-right:10px;">
 										  	<button id="btn_limpiar_solucion" type="button" class="btn btn-primary">Limpiar</button>
 										    <button id="btn_guardar_solucion" type="button" class="btn btn-primary">Guardar</button>
 										  </div>
-										<div class="col-md-8">
-	    									<div class="form-horizontal">
-	  											<div class="form-group">
-	    											<div class="col-sm-14">
-	    											<label for="txtDescripcion">Descripción:</label>
-	      												<textarea id="txtDescripcionSolucion" class="form-control" style="resize: none;"></textarea>
-	    											</div>
-	  											</div>
-	  										</div>
 										</div>
 					    				<div>
 						    				<table id="soluciones" class="table table-striped table-bordered" cellspacing="0" width="100%" style="margin-top: 15px;" >
@@ -358,39 +335,6 @@
 										    </table>
 					    				</div>
 			  						</div>
-									</div>
-									
-									<div class="row">
-									  <div class="pull-right" style="margin-right:10px;">
-									  	<button id="btn_limpiar_solucion" type="button" class="btn btn-primary">Limpiar</button>
-									    <button id="btn_guardar_solucion" type="button" class="btn btn-primary">Guardar</button>
-									  </div>
-									</div>
-									
-				    				<div>
-					    				<table id="soluciones" class="table table-striped table-bordered" cellspacing="0" width="100%" style="margin-top: 15px;" >
-									        <thead>
-									            <tr>
-									                <th style="width: 100px;" >Nro. Solución</th>
-									                <th>Descripción</th>
-									                <th style="width: 100px;">Prioridad</th>
-									                <th style="width: 100px;">Cant. Uso</th>
-									                <th>Opci&oacute;n</th>
-									            </tr>
-									        </thead>
-									        <tfoot>
-									            <tr>
-									                <th style="width: 100px;" >Nro. Solución</th>
-									                <th>Descripción</th>
-									                <th style="width: 100px;">Prioridad</th>
-									                <th style="width: 100px;">Cant. Uso</th>
-									                <th style="width: 160px;" >Opci&oacute;n</th>
-									            </tr>
-									        </tfoot>
-									        <tbody>
-									        </tbody>
-									    </table>
-				    				</div>
 							    
 							    </div>
 							    <div role="tabpanel" class="tab-pane" id="tabValidacion">
