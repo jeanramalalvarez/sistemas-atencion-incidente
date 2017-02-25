@@ -11,6 +11,7 @@ import pe.upc.atencionincidente.model.Seguimiento;
 import pe.upc.atencionincidente.model.SeguimientoCarteraAF;
 import pe.upc.atencionincidente.model.SeguimientoCarteraCTI;
 import pe.upc.atencionincidente.model.SeguimientoDemandaOferta;
+import pe.upc.atencionincidente.model.SeguimientoProductividad;
 
 @Service
 public class SeguimientoServiceImpl implements SeguimientoService {
@@ -36,6 +37,11 @@ public class SeguimientoServiceImpl implements SeguimientoService {
 	@Override
 	public List<SeguimientoDemandaOferta> getDemandaOferta(Seguimiento form) {
 		return seguimientoDAO.getDemandaOferta(form);
+	}
+
+	@Override
+	public List<SeguimientoProductividad> getProductividad(Seguimiento form) {
+		return seguimientoDAO.getProductividad(form);
 	}
 	
 }

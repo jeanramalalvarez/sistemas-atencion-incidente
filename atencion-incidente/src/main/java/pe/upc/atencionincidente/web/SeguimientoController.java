@@ -1,6 +1,8 @@
 package pe.upc.atencionincidente.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +19,7 @@ import pe.upc.atencionincidente.model.Seguimiento;
 import pe.upc.atencionincidente.model.SeguimientoCarteraAF;
 import pe.upc.atencionincidente.model.SeguimientoCarteraCTI;
 import pe.upc.atencionincidente.model.SeguimientoDemandaOferta;
+import pe.upc.atencionincidente.model.SeguimientoProductividad;
 import pe.upc.atencionincidente.service.SeguimientoService;
 
 @Controller
@@ -29,7 +32,6 @@ public class SeguimientoController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView init() {
 		ModelAndView mav = new ModelAndView("seguimiento");
-		mav.addObject("analistaList", this.getAnalistaList() );
 		mav.addObject("analistaList", this.getAnalistaList() );
 		Seguimiento form = new Seguimiento();
 		form.setTipoConsulta("1");
@@ -54,9 +56,37 @@ public class SeguimientoController {
 		form.setTipoConsulta("3");
 		List<SeguimientoDemandaOferta> demandaOfertaList = seguimientoService.getDemandaOferta(form);
 		
+		form.setTipoConsulta("4");
+		List<SeguimientoProductividad> productividadList = seguimientoService.getProductividad(form);
+		
+		Map<String, String> analistaMap = new LinkedHashMap<String, String>();
+		List<Analista> analistaList = new ArrayList<Analista>();
+		
+		productividadList.forEach(t -> {
+			analistaMap.put(t.getIdAnalista(), t.getAnalista());
+		});
+		
+		analistaMap.forEach((key, value) -> {
+			Analista analista = new Analista();
+			analista.setId(key);
+			analista.setNombresApellidos(value);
+			analistaList.add(analista);
+		});
+		
+		for (Analista analista : analistaList) {
+			List<SeguimientoProductividad>  productividadListTmp = new ArrayList<SeguimientoProductividad>();
+			for (SeguimientoProductividad seguimientoProductividad : productividadList) {
+				if(analista.getId().equals(seguimientoProductividad.getIdAnalista())){
+					productividadListTmp.add(seguimientoProductividad);
+				}
+			}
+			analista.setProductividadList(productividadListTmp);
+		}
+		
 		data.put("carteraAFList", carteraAFList);
 		data.put("carteraCTIList", carteraCTIList);
 		data.put("demandaOfertaList", demandaOfertaList);
+		data.put("productividadList", analistaList);
 		
 		return data;
 	}

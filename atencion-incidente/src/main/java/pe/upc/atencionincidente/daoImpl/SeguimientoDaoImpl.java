@@ -20,6 +20,7 @@ import pe.upc.atencionincidente.model.Seguimiento;
 import pe.upc.atencionincidente.model.SeguimientoCarteraAF;
 import pe.upc.atencionincidente.model.SeguimientoCarteraCTI;
 import pe.upc.atencionincidente.model.SeguimientoDemandaOferta;
+import pe.upc.atencionincidente.model.SeguimientoProductividad;
 
 @SuppressWarnings("unchecked")
 @Repository
@@ -154,6 +155,41 @@ public class SeguimientoDaoImpl implements SeguimientoDAO {
 			sol.setCapacidad(Integer.valueOf(String.valueOf(row.get("capacidad"))));
 			sol.setOferta(Integer.valueOf(String.valueOf(row.get("oferta"))));
 			sol.setDemanda(Integer.valueOf(String.valueOf(row.get("demanda"))));
+			list.add(sol);
+			
+		});
+			
+		return list;
+	}
+
+	@Override
+	public List<SeguimientoProductividad> getProductividad(Seguimiento form) {
+		
+		List<SeguimientoProductividad> list = new ArrayList<SeguimientoProductividad>();
+		
+		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("listSeguimientoCTI");
+		
+		Map<String, Object> inParamMap = new HashMap<String, Object>();
+		inParamMap.put("tipo", form.getTipoConsulta());
+		inParamMap.put("fecInicio", form.getFecInicio());
+		inParamMap.put("fecFin", form.getFecFin());
+		inParamMap.put("idAnalista", form.getIdAnalista());
+		System.out.println("listSeguimientoCTI - INPUT: " + inParamMap);
+		SqlParameterSource in = new MapSqlParameterSource(inParamMap);
+		
+		Map<String, Object> simpleJdbcCallResult = simpleJdbcCall.execute(in);
+		
+		ArrayList<Map<String,Object>> data = (ArrayList<Map<String,Object>>) simpleJdbcCallResult.get("#result-set-1");
+		System.out.println(data);
+		    
+		data.forEach(row->{
+			
+			SeguimientoProductividad sol = new SeguimientoProductividad();
+			
+			sol.setFecha(String.valueOf(row.get("fecha")));
+			sol.setIdAnalista(String.valueOf(row.get("id_Analista")));
+			sol.setAnalista(String.valueOf(row.get("analista")));
+			sol.setProductividad(Integer.valueOf(String.valueOf(row.get("productividad"))));
 			list.add(sol);
 			
 		});

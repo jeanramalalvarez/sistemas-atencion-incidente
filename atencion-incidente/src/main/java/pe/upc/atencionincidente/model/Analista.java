@@ -1,5 +1,7 @@
 package pe.upc.atencionincidente.model;
 
+import java.util.List;
+
 public class Analista {
 	
 	String id;
@@ -7,6 +9,7 @@ public class Analista {
 	String area;
 	String cargo;
 	
+	private List<SeguimientoProductividad> productividadList;
 
 	public String getNombresApellidos() {
 		return nombresApellidos;
@@ -34,6 +37,12 @@ public class Analista {
 		this.id = id;
 	}
 	
+	public List<SeguimientoProductividad> getProductividadList() {
+		return productividadList;
+	}
 	
-
+	public void setProductividadList(
+			List<SeguimientoProductividad> productividadList) {
+		this.productividadList = productividadList;
+	}
 }

@@ -11,9 +11,11 @@ $(document).ready(function() {
     			form:"/atencion-incidente/seguimiento"
     		},
     		btnGenerar:	$("#btn_generar"),
+    		txtFechaCorte: $("#fechaCorte"),
     		tbCarteraAF:	$("#tb_carteraAF"),
     		cnvCarteraCTI: $("#cnv_carteraCTI"),
     		cnvDemandaOferta: $("#cnv_demandaOferta"),
+    		tbProductividad:	$("#tb_productividad"),
     }
     
     seguimientoForm.getParams = function() {
@@ -33,10 +35,11 @@ $(document).ready(function() {
     seguimientoForm.buscar = function(data){
 		$.post(seguimientoForm.url.form, data, function(rsp){
 			console.log(rsp);
+			seguimientoForm.txtFechaCorte.html(seguimientoForm.fecIni() + " - " + seguimientoForm.fecFin());
 			seguimientoForm.getCarteraAF(rsp.carteraAFList);
 			seguimientoForm.getCarteraCTI(rsp.carteraCTIList);
 			seguimientoForm.getDemandaOferta(rsp.demandaOfertaList);
-			
+			seguimientoForm.getProductividad(rsp.productividadList);
 			seguimientoForm.btnGenerar.attr("disabled", false);
 		},'json')
 	}
@@ -108,7 +111,6 @@ $(document).ready(function() {
 		});
 		
 		var ctx = seguimientoForm.cnvDemandaOferta;
-		
 		var mybarChart = new Chart(ctx, {
 			type: 'bar',
 			data: {
@@ -181,6 +183,33 @@ $(document).ready(function() {
 				  }
 				}
 			  });
+		
+    }
+    
+    seguimientoForm.getProductividad = function(list){
+    	
+    	seguimientoForm.tbProductividad.find('thead').html('');
+		seguimientoForm.tbProductividad.find('tbody').html('');
+		
+		$.each(list, function(key, value){
+			if(key == 1){
+				var cadena = "<tr>";
+				cadena += "<th>Analista Funcional</th>";
+				$.each(value.productividadList, function(key, value){
+					cadena += "<th>" + value.fecha + "</th>";
+				});
+				cadena +="</tr>";
+				seguimientoForm.tbProductividad.find('thead').append(cadena);
+			}else{
+				var cadena = "<tr>";
+				cadena += "<td>" + value.nombresApellidos + "</th>";
+				$.each(value.productividadList, function(key, value){
+					cadena += "<td>" + value.productividad + "</td>";
+				});
+				cadena +="</tr>";
+				seguimientoForm.tbProductividad.find('tbody').append(cadena);
+			}
+		});
 		
     }
     

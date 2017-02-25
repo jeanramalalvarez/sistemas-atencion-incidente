@@ -120,7 +120,7 @@
 					<div class="panel panel-default">
   						<div class="panel-body">
  	 							<p style="vertical-align: top; color: #FF4C01;" >
-    							Fecha de Corte: 01/01/2017 - 15/02/2017
+    							Fecha de Corte: <span id="fechaCorte" ></span>
     							</p>
     							<div class="row">
     								<div class="col-md-5">
@@ -167,6 +167,25 @@
 	    											<label for="cnv_demandaOferta" style="vertical-align: top; color: #FF4C01;" >Demanda vs Oferta</label>
       												<br />
       												<canvas id="cnv_demandaOferta" ></canvas>
+    											</div>
+  											</div>
+  										</div>
+									</div>
+								</div><!-- fin row-->
+								
+    							<div class="row" style="overflow: auto; margin: 15px 5px 5px 5px;" >
+									<div class="col-md-14">
+    									<div class="form-horizontal">
+  											<div class="form-group" style="margin-right: 0px;margin-left: 0px;">
+    											<div class="col-sm-14" style="text-align: center;">
+	    											<label for="cnv_demandaOferta" style="vertical-align: top; color: #FF4C01;" >Demanda vs Oferta</label>
+      												
+      												  <table id="tb_productividad" class="table table-bordered table-striped" style="text-align: center;">
+													    <thead>
+													    </thead>
+													    <tbody>
+													    </tbody>
+													  </table>
     											</div>
   											</div>
   										</div>

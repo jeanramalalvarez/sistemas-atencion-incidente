@@ -7,6 +7,7 @@ import pe.upc.atencionincidente.model.Seguimiento;
 import pe.upc.atencionincidente.model.SeguimientoCarteraAF;
 import pe.upc.atencionincidente.model.SeguimientoCarteraCTI;
 import pe.upc.atencionincidente.model.SeguimientoDemandaOferta;
+import pe.upc.atencionincidente.model.SeguimientoProductividad;
 
 
 public interface SeguimientoService {
@@ -18,4 +19,6 @@ public interface SeguimientoService {
 	List<SeguimientoCarteraCTI> getCarteraCTI(Seguimiento form);
 
 	List<SeguimientoDemandaOferta> getDemandaOferta(Seguimiento form);
+	
+	List<SeguimientoProductividad> getProductividad(Seguimiento form);
 }
