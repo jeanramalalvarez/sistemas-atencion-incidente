@@ -16,6 +16,7 @@ import pe.upc.atencionincidente.model.Analista;
 import pe.upc.atencionincidente.model.Seguimiento;
 import pe.upc.atencionincidente.model.SeguimientoCarteraAF;
 import pe.upc.atencionincidente.model.SeguimientoCarteraCTI;
+import pe.upc.atencionincidente.model.SeguimientoDemandaOferta;
 import pe.upc.atencionincidente.service.SeguimientoService;
 
 @Controller
@@ -50,9 +51,13 @@ public class SeguimientoController {
 		form.setTipoConsulta("2");
 		List<SeguimientoCarteraCTI> carteraCTIList = seguimientoService.getCarteraCTI(form);
 		
+		form.setTipoConsulta("3");
+		List<SeguimientoDemandaOferta> demandaOfertaList = seguimientoService.getDemandaOferta(form);
+		
 		data.put("carteraAFList", carteraAFList);
 		data.put("carteraCTIList", carteraCTIList);
-
+		data.put("demandaOfertaList", demandaOfertaList);
+		
 		return data;
 	}
 	

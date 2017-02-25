@@ -6,6 +6,7 @@ import pe.upc.atencionincidente.model.Analista;
 import pe.upc.atencionincidente.model.Seguimiento;
 import pe.upc.atencionincidente.model.SeguimientoCarteraAF;
 import pe.upc.atencionincidente.model.SeguimientoCarteraCTI;
+import pe.upc.atencionincidente.model.SeguimientoDemandaOferta;
 
 
 public interface SeguimientoDAO {
@@ -16,5 +17,5 @@ public interface SeguimientoDAO {
 	
 	List<SeguimientoCarteraCTI> getCarteraCTI(Seguimiento form);
 
-		
+	List<SeguimientoDemandaOferta> getDemandaOferta(Seguimiento form);		
 }

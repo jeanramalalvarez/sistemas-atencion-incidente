@@ -157,19 +157,22 @@
   											</div>
   										</div>
 									</div>
-									<div class="col-md-2">
+								</div><!-- fin row-->
+								
+    							<div class="row" style="overflow: auto; margin: 5px;" >
+									<div class="col-md-14">
     									<div class="form-horizontal">
-  											<div class="form-group" style="height: 10px;" >
-    											<div class="col-sm-1">
-    											</div>
-  											</div>
-  											<div class="form-group">
-    											<div class="col-sm-1">
+  											<div class="form-group" style="margin-right: 0px;margin-left: 0px;">
+    											<div class="col-sm-14" style="text-align: center;">
+	    											<label for="cnv_demandaOferta" style="vertical-align: top; color: #FF4C01;" >Demanda vs Oferta</label>
+      												<br />
+      												<canvas id="cnv_demandaOferta" ></canvas>
     											</div>
   											</div>
   										</div>
 									</div>
 								</div><!-- fin row-->
+								
   						</div>
 					</div>
     				

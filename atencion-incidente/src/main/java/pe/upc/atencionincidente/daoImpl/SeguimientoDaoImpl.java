@@ -19,6 +19,7 @@ import pe.upc.atencionincidente.model.Analista;
 import pe.upc.atencionincidente.model.Seguimiento;
 import pe.upc.atencionincidente.model.SeguimientoCarteraAF;
 import pe.upc.atencionincidente.model.SeguimientoCarteraCTI;
+import pe.upc.atencionincidente.model.SeguimientoDemandaOferta;
 
 @SuppressWarnings("unchecked")
 @Repository
@@ -117,6 +118,42 @@ public class SeguimientoDaoImpl implements SeguimientoDAO {
 			sol.setEstado(String.valueOf(row.get("estado")));
 			sol.setTotal(Integer.valueOf(String.valueOf(row.get("total"))));
 			
+			list.add(sol);
+			
+		});
+			
+		return list;
+	}
+
+	@Override
+	public List<SeguimientoDemandaOferta> getDemandaOferta(Seguimiento form) {
+		
+		List<SeguimientoDemandaOferta> list = new ArrayList<SeguimientoDemandaOferta>();
+		
+		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("listSeguimientoCTI");
+		
+		Map<String, Object> inParamMap = new HashMap<String, Object>();
+		inParamMap.put("tipo", form.getTipoConsulta());
+		inParamMap.put("fecInicio", form.getFecInicio());
+		inParamMap.put("fecFin", form.getFecFin());
+		inParamMap.put("idAnalista", form.getIdAnalista());
+		System.out.println("listSeguimientoCTI - INPUT: " + inParamMap);
+		SqlParameterSource in = new MapSqlParameterSource(inParamMap);
+		
+		Map<String, Object> simpleJdbcCallResult = simpleJdbcCall.execute(in);
+		
+		ArrayList<Map<String,Object>> data= (ArrayList<Map<String,Object>>) simpleJdbcCallResult.get("#result-set-1");
+		System.out.println(data);
+		    
+		data.forEach(row->{
+			
+			SeguimientoDemandaOferta sol = new SeguimientoDemandaOferta();
+			
+			sol.setFecha(String.valueOf(row.get("fecha")));
+			sol.setCartera(Integer.valueOf(String.valueOf(row.get("cartera"))));
+			sol.setCapacidad(Integer.valueOf(String.valueOf(row.get("capacidad"))));
+			sol.setOferta(Integer.valueOf(String.valueOf(row.get("oferta"))));
+			sol.setDemanda(Integer.valueOf(String.valueOf(row.get("demanda"))));
 			list.add(sol);
 			
 		});
