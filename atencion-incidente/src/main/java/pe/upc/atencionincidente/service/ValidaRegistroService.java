@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import pe.upc.atencionincidente.model.KbValidaRegistro;
+import pe.upc.atencionincidente.model.KbValidaRegistroDet;
 
 public interface ValidaRegistroService {
 	
@@ -11,5 +12,8 @@ public interface ValidaRegistroService {
 	String registrarKbValidaRegistro(KbValidaRegistro form);
 	List<Map<String, Object>> getListKeyValues();
 	void eliminarKbValidaRegistro(KbValidaRegistro form);
+	List<KbValidaRegistroDet> buscarKbValidaRegistroDet(KbValidaRegistroDet form);
+	String registrarKbValidaRegistroDet(KbValidaRegistroDet form);
+	void eliminarKbValidaRegistroDet(KbValidaRegistroDet form);
 
 }

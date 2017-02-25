@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import pe.upc.atencionincidente.dao.ValidaRegistroDAO;
 import pe.upc.atencionincidente.model.KbValidaRegistro;
+import pe.upc.atencionincidente.model.KbValidaRegistroDet;
 
 @Service
 
@@ -36,5 +37,24 @@ public class ValidaRegistroServiceImpl implements ValidaRegistroService {
 	public void eliminarKbValidaRegistro(KbValidaRegistro form) {
 		 validaRegistroDAO.eliminarKbValidaRegistro(form);
 	}
+
+	@Override
+	public List<KbValidaRegistroDet> buscarKbValidaRegistroDet(KbValidaRegistroDet form) {
+		// TODO Auto-generated method stub
+		return validaRegistroDAO.buscarKbValidaRegistroDet(form);
+	}
+
+	@Override
+	public String registrarKbValidaRegistroDet(KbValidaRegistroDet form) {
+		// TODO Auto-generated method stub
+		return validaRegistroDAO.registrarKbValidaRegistroDet(form);
+	}
+
+	@Override
+	public void eliminarKbValidaRegistroDet(KbValidaRegistroDet form) {
+		 validaRegistroDAO.eliminarKbValidaRegistroDet(form);	
+	}
+
+
 
 }
