@@ -8,7 +8,6 @@ $(document).ready(function() {
 	    		txtGlosa:				function(){  return  $("#txtGlosa").val(); } ,
 	    		txtPautas:				function(){  return  $("#txtPautas").val(); },
 	    		txtDescripcion:			function(){  return  $("#txtDescripcion").val(); },
-	     		txtAnexo:				function(){  return  $("#txtAnexo").val(); },
 	    		txtRuta:    			function(){  return  $("#txtRuta").val(); },
 	    	    		
 	    		url:{
@@ -36,7 +35,6 @@ $(document).ready(function() {
 	    		    txtGlosa:			solucionCheckForm.txtGlosa(),
 	    		    txtPautas:			solucionCheckForm.txtPautas(),
 	    		    txtDescripcion:		solucionCheckForm.txtDescripcion(),
-	    		    txtAnexo:		solucionCheckForm.txtAnexo(),
 	    		    txtRuta:  			solucionCheckForm.txtRuta()
 	    			
 	    	};
@@ -94,8 +92,7 @@ $(document).ready(function() {
 	     		$("#txtGlosa").val(rsp.solucionCheck.txtGlosa);
 	     		$("#txtPautas").val(rsp.solucionCheck.txtPautas);
 	     		$("#txtDescripcion").val(rsp.solucionCheck.txtDescripcion);
-	     		$("#txtAnexo").val(rsp.solucionCheck.txtAnexo);
-	 				
+	     		$("#txtRuta").parent().find("input[type=text]").val(rsp.solucionCheck.txtAnexo);	
 	 		},'json')
 	 	}
 	     
@@ -106,7 +103,7 @@ $(document).ready(function() {
 		     	$("#txtGlosa").val("");
 		     	$("#txtPautas").val("");
 		     	$("#txtDescripcion").val(""); 
-		     	$("#txtAnexo").val(""); 
+		     	$("#txtRuta").filestyle('clear');
 
 		     }
 		     
@@ -114,9 +111,9 @@ $(document).ready(function() {
 	     
 	     
 	
-	     $(document).on('click', '.btn_eliminarDet', function(){
+	     $(document).on('click', '.btn_eliminar', function(){
 	     	
-	     	if( !confirm("Esta seguro de eliminar el detalle de Valor Clave") ){
+	     	if( !confirm("Esta seguro de eliminar el registro") ){
 	 			return false;
 	 		}
 	     	
@@ -128,26 +125,20 @@ $(document).ready(function() {
 	     
 	     solucionCheckForm.eliminar = function(data){
 	 		$.post(solucionCheckForm.urlEliminar.form, data, function(rsp){
-	 			solucionCheckForm.btn_buscarsolucionCheck();
+	 			var table = solucionCheckForm.tbsolucionCheck.DataTable();
+		     	table.ajax.reload();
 	 			solucionCheckForm.limpiar();
 	 		},'json')
 	 	}
-
-	     
 	     
 	     solucionCheckForm.btnGuardar.on("click",function(){
 
 	 		if(!solucionCheckForm.validacion()){
-	 			alert("Debe seleccionar los campos.");
+	 			alert("Debe ingresar los campos requeridos.");
 	 			return false;
 	 		}
 	 		
-	 		if(!solucionCheckForm.validacionRegistro()){
-	 			alert("Debe ingresar por lo menos una descripcion.");
-	 			return false;
-	 		}
-	 		
-	 		if( !confirm("Esta seguro de guardar el Valor Clave") ){
+	 		if( !confirm("Esta seguro de guardar la validacion BC") ){
 	 			return false;
 	 		}
 
@@ -175,14 +166,6 @@ $(document).ready(function() {
 	     		return false
 	     	}
 	     	
-	     	return true;
-	     }
-	     
-	     solucionCheckForm.validacionRegistro = function(){
-	     	
-	     	if (solucionCheckForm.valorClave() == ""){
-	     		return false;
-	     	}
 	     	return true;
 	     }
 	     

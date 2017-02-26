@@ -1,5 +1,7 @@
 package pe.upc.atencionincidente.web;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +27,6 @@ public class SolucionCheckController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView init() {
 		ModelAndView mav = new ModelAndView("solucionCheck");
-		mav.addObject("solucionCheck", new KbSolucionCheck());
 		return mav;
 	}
 	
@@ -54,6 +55,14 @@ public class SolucionCheckController {
 		Map<String,Object> data = new HashMap<String,Object>();
 	
 		form.setUsuarioAdicion("ADMIN");
+		if(form.getTxtRuta() != null && !form.getTxtRuta().equals("")){
+			Path p = Paths.get(form.getTxtRuta());
+			String file = p.getFileName().toString();
+			form.setTxtAnexo(file);
+		}
+		if(form.getTxtAnexo() == null){
+			form.setTxtAnexo("");
+		}
 		String idSolucionCh = solucionCheckService.registrarKbSolucionCheck(form);
 
 		data.put("idSolucionCh", idSolucionCh);
@@ -70,7 +79,7 @@ public class SolucionCheckController {
 		KbSolucionCheck KbSolucionCheck = validaRegistros.get(0);
 
 		Map<String,Object> data = new HashMap<String,Object>();		
-		data.put("validaRegistro",  KbSolucionCheck);
+		data.put("solucionCheck",  KbSolucionCheck);
 
 		return data;
 	}
