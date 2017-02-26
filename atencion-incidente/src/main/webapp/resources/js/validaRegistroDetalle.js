@@ -73,7 +73,7 @@ $(document).ready(function() {
 	             },
 	     		columns: [
 	         		{ data: 'numClave',"orderable": true },
-	         		{ data: 'tipClave' },
+	         		{ data: 'deTipClave' },
 	         		{ data: 'txtValorClave' },
 	         		{ data: 'numLogitudParam' },
 	         		{ data: 'txtFormatoParam' },

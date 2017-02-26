@@ -151,6 +151,7 @@ public class ValidaRegistroDaoImpl implements ValidaRegistroDAO {
 			sol.setNumSecuencia(String.valueOf(row.get("NUM_SECUENCIA")));
 			sol.setNumClave(String.valueOf(row.get("NUM_CLAVE")));
 			sol.setTipClave(String.valueOf(row.get("TIP_CLAVE")));
+			sol.setDeTipClave(String.valueOf(row.get("DE_TIP_CLAVE")));
 			sol.setTxtValorClave(String.valueOf(row.get("TXT_VALOR_CLAVE")));
 			sol.setNumLogitudParam(String.valueOf(row.get("NUM_LONGITUD_PARAM")));
 			sol.setTxtFormatoParam(String.valueOf(row.get("TXT_FORMATO_PARAM")));

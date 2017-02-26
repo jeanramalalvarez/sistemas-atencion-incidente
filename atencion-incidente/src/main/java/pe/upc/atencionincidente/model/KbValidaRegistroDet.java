@@ -9,6 +9,7 @@ public class KbValidaRegistroDet {
 	private String numSecuencia;
 	private String numClave;
 	private String tipClave;
+	private String deTipClave;
 	private String txtValorClave;
 	private String numLogitudParam;
 	private String txtFormatoParam;
@@ -113,6 +114,14 @@ public class KbValidaRegistroDet {
 	}
 	public void setTipClave(String tipClave) {
 		this.tipClave = tipClave;
+	}
+	
+	public String getDeTipClave() {
+		return deTipClave;
+	}
+	
+	public void setDeTipClave(String deTipClave) {
+		this.deTipClave = deTipClave;
 	}
 	
 	
