@@ -24,6 +24,7 @@ public class KbSolucionCheck{
 	
 	private String tipoConsulta;
 	
+	
 	public String getIdSolucionCh() {
 		return idSolucionCh;
 	}

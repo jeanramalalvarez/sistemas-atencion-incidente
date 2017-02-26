@@ -1,5 +1,7 @@
 var validaRegistroForm;
 
+
+
 $(document).ready(function() {
 	
     validaRegistroForm = {
@@ -18,6 +20,9 @@ $(document).ready(function() {
     		},
     		urlCargar:{
     			form:"/atencion-incidente/validaRegistro/cargar"
+    		},
+    		urlEliminar:{
+    			form:"/atencion-incidente/validaRegistro/eliminar"
     		},
     		btnGuardar:$("#btn_guardar"),
     		btnLimpiar:$("#btn_limpiar"),
@@ -134,9 +139,9 @@ $(document).ready(function() {
         		{ data: 'txtObservacion' },
         		{ data: 'opcion',"orderable": false ,
                   render:function(data, type, row){
-                	 var  btnEvaluar = '<button class="optBtn" style="width: 70px; float: left; margin-right: 8px;" ><a href="/atencion-incidente/validaRegistro/'+row.numSecuencia +'/agregarValorClave">Detalle</a></button>';
+                	 var  btnEvaluar = '<button class="optBtn" style="width: 70px; float: left; margin-right: 8px;" ><a href="/atencion-incidente/validaRegistro/'+row.numSecuencia +'/mostrarValorClave">Detalle</a></button>';
                 	 btnEvaluar += '<button class="optBtn btn_cargar" style="width: 70px; float: left; margin-right: 8px;" data-id="' + row.numSecuencia + '" >Modificar</button>';
-                	 btnEvaluar += '<button class="optBtn btn_soluciones" style="width: 70px; float: left;" data-id="' + row.numSecuencia + '" >Eliminar</button>';
+                	 btnEvaluar += '<button class="optBtn btn_eliminar" style="width: 70px; float: left;" data-id="' + row.numSecuencia + '" >Eliminar</button>';
                 	 //if(row.estado=="Atendido" || row.estado=="Rechazado"){btnEvaluar="";}
                 	 return btnEvaluar;
                   }
@@ -204,168 +209,28 @@ $(document).ready(function() {
 		},'json')
 	}
     
-    $(document).on('click', '.btn_soluciones', function(){
-    	validaRegistroForm.buscarSolucion($(this).attr("data-id"));
-    });
-    
-    validaRegistroForm.buscarSolucion = function(data){
-    	$("#contentSolucion").css("display", "block");
-    	$("#idIncidenteBase").val(data);
-    	var table = validaRegistroForm.tbSoluciones.DataTable();
-    	table.ajax.reload();
-    	//var strAncla=$(this).attr('href'); //id del ancla
-		$('body,html').stop(true,true).animate({				
-			scrollTop: $("#contentSolucion").offset().top
-		},1000);
-	}
-    
-    
-    validaRegistroForm.tbSoluciones = $('#soluciones');
-    
-    validaRegistroForm.tbSoluciones.DataTable(
-        	{
-        		searching: false,
-        		lengthChange: false,
-        		pageLength: 10,
-        		//data: data,
-                ajax: {
-                        url: '/atencion-incidente/validaRegistro/solucion/buscar',
-                        "type": "POST",
-                        data: validaRegistroForm.getParamsSolucion,
-                        //dataSrc: 'data'
-                        dataSrc: function(json){
-                        	return json.soluciones
-                        }
-                },
-        		columns: [
-            		{ data: 'nuSecuencia',"orderable": true },
-            		{ data: 'txtDescripcion' },
-            		{ data: 'nuPrioridad',"orderable": false },
-            		{ data: 'nuVecesUso',"orderable": false },
-            		{ data: 'opcion',"orderable": false ,
-                      render:function(data, type, row){
-                    	 var btnEvaluar = '<button class="optBtn btn_eliminar_solucion" style="width: 70px; float: left; margin-right: 8px;" data-id="' + row.idSolucion + '" >Eliminar</button>';
-                    	 btnEvaluar += '<button class="optBtn btn_cargar_solucion" style="width: 70px; float: left; margin-right: 8px;" data-id="' + row.idSolucion + '" >Modificar</button>';
-                    	 return btnEvaluar;
-                      }
-            		}
-        		]
-        	}
-
-    );
-    
-    validaRegistroForm.limpiarSolucion = function(){
-    	$("#idSolucion").val("");
-    	$("#txtNroSolucion").val("");
-    	$("#txtPrioridad").val("");
-    	$("#txtDescripcionSolucion").val("");
-    }
-    
-    validaRegistroForm.validacionRegistroSolucion = function(){
+    $(document).on('click', '.btn_eliminar', function(){
     	
-    	if ( validaRegistroForm.descripcionSolucion() == "" ){
-    		return false;
-    	}
-    	
-    	if ( validaRegistroForm.prioridad() == "" ){
-    		return false;
-    	}
-    	
-    	return true;
-    }
-    
-    validaRegistroForm.btnLimpiarSolucion.on("click", validaRegistroForm.limpiarSolucion);
-    
-    validaRegistroForm.btnGuardarSolucion.on("click",function(){
-
-		if(!validaRegistroForm.validacionRegistroSolucion()){
-			alert("Debe ingresar una descripcion y una prioridad.");
-			return false;
-		}
-
-		if( !confirm("Esta seguro de guardar la solucion") ){
-			return false;
-		}
-
-		var data = validaRegistroForm.getParamsSolucion();
-		//console.log(data);
-		validaRegistroForm.registrarSolucion(data);
-
-	});
-    
-    validaRegistroForm.registrarSolucion = function(data){
-		
-    	validaRegistroForm.btnGuardarSolucion.attr("disabled", true);
-
-		$.post(validaRegistroForm.urlSolucion.form, data, function(rsp){
-			validaRegistroForm.btnGuardarSolucion.attr("disabled", false);
-			validaRegistroForm.buscarSolucion($("#idIncidenteBase").val());
-			validaRegistroForm.limpiarSolucion();
-		},'json')
-	}
-    
-    $(document).on('click', '.btn_cargar_solucion', function(){
-    	var data = {idSolucion: $(this).attr("data-id")};
-    	validaRegistroForm.cargarSolucion(data);
-    });
-    
-    validaRegistroForm.cargarSolucion = function(data){
-		$.post(validaRegistroForm.urlCargarSolucion.form, data, function(rsp){
-			$("#idSolucion").val(rsp.solucion.idSolucion);
-			$("#txtNroSolucion").val(rsp.solucion.nuSecuencia);
-    		$("#txtPrioridad").val(rsp.solucion.nuPrioridad);
-    		$("#txtDescripcionSolucion").val(rsp.solucion.txtDescripcion);
-				
-		},'json')
-	}
-    
-    $(document).on('click', '.btn_eliminar_solucion', function(){
-    	
-    	if( !confirm("Esta seguro de eliminar la solucion") ){
+    	if( !confirm("Esta seguro de eliminar la Palabra Clave") ){
 			return false;
 		}
     	
-    	var data = {idSolucion: $(this).attr("data-id")};
-    	validaRegistroForm.eliminarSolucion(data);
+    	var data = {numSecuencia: $(this).attr("data-id")};
+    	validaRegistroForm.eliminar(data);
     });
     
-    validaRegistroForm.eliminarSolucion = function(data){
-		$.post(validaRegistroForm.urlEliminarSolucion.form, data, function(rsp){
-			validaRegistroForm.buscarSolucion($("#idIncidenteBase").val());
+    validaRegistroForm.eliminar = function(data){
+		$.post(validaRegistroForm.urlEliminar.form, data, function(rsp){
+			validaRegistroForm.btn_buscarValidaRegistro();
+			validaRegistroForm.limpiar();
 		},'json')
 	}
 
-    /*------------------------------------------------------------------*/
     
-//    $("#nrocti").on('blur',function(){
-//    	
-//    	var reg = /^CTI[0-9]{7}$/;
-//    	var v = $.trim($(this).val());
-//    	
-//    	if( v.length > 0 ){
-//    		
-//    		if( !reg.test(v) ){
-//    			alert("Debe ingresar el Nro. de CTI con formato correcto: CTINNNNNNN.");
-//    			$(this).val("");
-//    			$(this).focus();
-//    		}
-//    	}
-//    })
+ /**************************************************************/
     
-//    $("#nroSS").on('blur',function(){
-//    	
-//    	var reg = /^SS[0-9]{5}$/;
-//    	var v = $.trim($(this).val());
-//    	
-//    	if( v.length > 0 ){
-//    		
-//    		if( !reg.test(v) ){
-//    			alert("Debe ingresar el Nro. SS con formato correcto: SSNNNNN.");
-//    			$(this).val("");
-//    			$(this).focus();
-//    		}
-//    	}
-//    })
+    
+
 //    
     $("#sistema").change(function(){
 		
@@ -412,5 +277,7 @@ $(document).ready(function() {
 	});
 	
     /*------------------------------------------------------*/
+	
+
     
 } );

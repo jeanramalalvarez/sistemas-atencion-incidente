@@ -3,7 +3,7 @@
 <!doctype html>
 <html>
 	<head>
- 		<title>Actualizar Base de Conocimiento de Incidentes</title>
+ 		<title>Detalle de Valores Claves</title>
  		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/bootstrap/css/bootstrap.css" />
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/bootstrap/css/bootstrap-datepicker.css" />
@@ -58,147 +58,165 @@
     			<div class="container-fluid">
     				<div class="panel panel-default">
   						<div class="panel-heading">
-    						<h3 class="panel-title">Actualiza Valores Claves</h3>
+    						<h3 class="panel-title">Actualizar Validación BC</h3>
   						</div>
   						<div class="panel-body">
-    						<form>
+
+
+							
+    						<form:form modelAttribute="solucionCheck"  style="margin-top: 0px;" >
     							<div class="row">
-    								<div class="col-md-4">
+    								<div class="col-md-2" style="text-align: right;" >
     									<div class="form-horizontal">
   											<div class="form-group">
-    											<label for="inputtext3" class="col-sm-5 control-label">Tipo Solicitud:</label>
-    											<div class="col-sm-7">
-      												<form:select path="tiposSolicitud" id="tipoSolicitud" cssClass="form-control" required="true" >
-												    	<form:option value="" label="Seleccionar" />
-    													<form:options items="${tiposSolicitud}" />
-													</form:select>
-    											</div>
-  											</div>
-  											<div class="form-group">
-    											<label for="inputtext3" class="col-sm-5 control-label">Sistema:</label>
-												<div class="col-sm-7">
-      												<form:select path="sistemas" id="sistema" cssClass="form-control" required="true" >
-												    	<form:option value="" label="Seleccionar" />
-    													<form:options items="${sistemas}" />
-													</form:select>
+    											<div class="col-sm-10">
+    											<label for="secuencia" >Número:</label>
     											</div>
   											</div>
   										</div>
 									</div>
-									<div class="col-md-4">
+									  <div class="col-md-2" style="text-align: right;" >
     									<div class="form-horizontal">
   											<div class="form-group">
-    											<label for="inputtext3" class="col-sm-5 control-label">Proceso:</label>
-    											<div class="col-sm-7">
-      												<select class="form-control" id="proceso">
-                                  						<option value="">Seleccionar</option>
-                              						</select>
-    											</div>
-  											</div>
-  											<div class="form-group">
-    											<label for="inputtext3" class="col-sm-5 control-label">Sub Proceso:</label>
- 												<div class="col-sm-7">
-      												<select class="form-control" id="subProceso">
-                                  						<option value="">Seleccionar</option>
-                              						</select>
+    											<div class="col-sm-10">
+      												<form:input path="idSolucionCh" id="idSolucionCh" disabled="true" class="form-control" style="" />
     											</div>
   											</div>
   										</div>
 									</div>
 								</div><!-- fin row-->
 								<div class="row">
-								  <div class="pull-right" style="margin-right:10px; ;margin-top:-40px">
-								    <button id="btn_buscarValidaRegistro" type="button" class="btn btn-primary">Buscar</button>
-								  </div>
-								</div>
-    						</form><!-- fin form-->
-  						</div>
-					</div>
-			
-					
-					<div class="panel panel-default">
-  						<div class="panel-body">
-    						<form:form modelAttribute="validaRegistro" >
-    							<div class="row">
-    								<div class="col-md-2">
+    								<div class="col-md-2" style="text-align: right;" >
     									<div class="form-horizontal">
   											<div class="form-group">
-    											<div class="col-sm-8">
-    												<label for="numSecuencia">Secuencia:</label>
-      												<form:input path="numSecuencia" id="txtSecuencia" disabled="true" class="form-control" style="" />
+    											<div class="col-sm-10">
+    											<label for="secuencia" >Glosa:</label>
+    											</div>
+  											</div>
+  											
+  										</div>
+									</div>
+									<div class="col-md-2" style="text-align: right;" >
+    									<div class="form-horizontal">
+  											<div class="form-group">
+    											<div class="col-sm-10">
+      												<form:input path="txtGlosa" id="txtGlosa" disabled="false" class="form-control" style="" />
     											</div>
   											</div>
   										</div>
 									</div>
-									<div class="col-md-5">
+								</div><!-- fin row-->
+    						
+    						<div class="row">
+    								<div class="col-md-2" style="text-align: right;" >
     									<div class="form-horizontal">
   											<div class="form-group">
-    											<div class="col-sm-12">
-	    											<label for="txtDescripcion">Descripción:</label>
-      												<form:textarea path="txtDescripcion" id="txtDescripcion" disabled="false" class="form-control" style="resize: none;" />
+    											<div class="col-sm-10">
+    											<label for="secuencia" >Pautas:</label>
     											</div>
   											</div>
   										</div>
 									</div>
-									<div class="col-md-5">
+									<div class="col-md-2" style="text-align: right;" >
     									<div class="form-horizontal">
-  						
   											<div class="form-group">
-    											<div class="col-sm-12">
-	    											<label for="txtObservacion">Notificación:</label>
-      												<form:textarea path="txtObservacion" id="txtObservacion" disabled="false" class="form-control" style="resize: none;" />
+    											<div class="col-sm-10">
+      												<form:input path="txtPautas" id="txtPautas" disabled="false" class="form-control" style="" />
     											</div>
   											</div>
   										</div>
 									</div>
 								</div><!-- fin row-->
 								<div class="row">
+    								<div class="col-md-2" style="text-align: right;" >
+    									<div class="form-horizontal">
+  											<div class="form-group">
+    											<div class="col-sm-10">
+    											<label for="secuencia" >Descripción:</label>
+    											</div>
+  											</div>
+  										</div>
+									</div>
+									<div class="col-md-2" style="text-align: right;" >
+    									<div class="form-horizontal">
+  											<div class="form-group">
+    											<div class="col-sm-10">
+      												<form:input path="txtDescripcion" id="txtDescripcion" disabled="false" class="form-control" style="" />
+    											</div>
+  											</div>
+  										</div>
+									</div>
+								</div><!-- fin row-->
+								<div class="row">
+    								<div class="col-md-2" style="text-align: right;" >
+    									<div class="form-horizontal">
+  											<div class="form-group">
+    											<div class="col-sm-10">
+    											<label for="secuencia" >Anexo:</label>
+    											</div>
+  											</div>
+  										</div>
+									</div>
+								<div class="col-md-2" style="text-align: right;" >
+    									<div class="form-horizontal">
+  											<div class="form-group">
+    											<div class="col-sm-10">
+      												<form:input path="txtAnexo" id="txtAnexo" disabled="false" class="form-control" style="" />
+    											</div>
+  											</div>
+  										</div>
+									</div>
+								</div><!-- fin row-->
+							</form:form><!-- fin form-->
+							<div class="row">
 								  <div class="pull-right" style="margin-right:10px;">
 								  	<button id="btn_limpiar" type="button" class="btn btn-primary">Limpiar</button>
 								    <button id="btn_guardar" type="button" class="btn btn-primary">Guardar</button>
 								  </div>
 								</div>
-    						</form:form><!-- fin form-->
   						</div>
 					</div>
+					
 
-    				
-			
-    				<div>
-	    				<table id="validaRegistros" class="table table-striped table-bordered" cellspacing="0" width="100%">
+
+	
+	    				<table id="solucionCheckList" class="table table-striped table-bordered" cellspacing="0" width="100%">
 					        <thead>
 					            <tr>
-					                <th style="width: 100px;" >Secuencia</th>
-					                <th>Descripción</th>
-					                <th style="width: 100px;">Notificaci&oacute;n</th>
+					                <th style="width: 50px;" >Num</th>
+					                <th style="width: 80px;">glosa</th>
+					                <th style="width: 250px;">Pautas</th>
+					                <th style="width: 100px;">Descripcion</th>
+					                <th style="width: 250px;">Ruta</th>
 					                <th>Opci&oacute;n</th>
 					            </tr>
 					        </thead>
 					        <tfoot>
 					            <tr>
-					                <th>Secuencia</th>
-					                <th>Descripci&oacute;n</th>
-					                <th>Notificaci&oacute;n</th>
-					                <th width="230px;" >Opci&oacute;n</th>
+      								<th style="width: 50px;" >Num</th>
+					                <th style="width: 80px;">glosa</th>
+					                <th style="width: 250px;">Pautas</th>
+					                <th style="width: 100px;">Descripcion</th>
+					                <th style="width: 250px;">Ruta</th>
+					                <th>Opci&oacute;n</th>
 					            </tr>
 					        </tfoot>
 					        <tbody>
 					        </tbody>
 					    </table>
-    				</div>
-					
-			
-			<!-- aqui va-->
-			
-			
-			    			</div>
+    			
+
+
+
+
+    			</div>
   			</div>
 		</div>
 
 		<script type="text/javascript" src="${pageContext.request.contextPath}/vendors/datatables/js/jquery.dataTables.js">
 		</script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/vendors/js/moment.js"></script>
-		<script src="${pageContext.request.contextPath}/resources/js/validaRegistro.js"></script>
+		<script src="${pageContext.request.contextPath}/resources/js/solucionCheck.js"></script>
  	</body>
 
  </html>
