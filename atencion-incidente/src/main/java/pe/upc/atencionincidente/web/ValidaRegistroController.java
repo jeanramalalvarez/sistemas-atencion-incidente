@@ -1,6 +1,5 @@
 package pe.upc.atencionincidente.web;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import pe.upc.atencionincidente.model.KbIncidente;
-import pe.upc.atencionincidente.model.KbSolucion;
 import pe.upc.atencionincidente.model.KbValidaRegistro;
 import pe.upc.atencionincidente.model.KbValidaRegistroDet;
 import pe.upc.atencionincidente.service.SolicitudService;
