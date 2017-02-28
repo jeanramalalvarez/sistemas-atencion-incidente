@@ -54,6 +54,9 @@ $(document).ready(function() {
 		
     }
     
+    var pieChart = null;
+    var mybarChart = null;
+    
     seguimientoForm.getCarteraCTI = function(list){
 		
     	var labels = [];
@@ -65,9 +68,13 @@ $(document).ready(function() {
 			i++;
 		});
 		
-		var ctx = seguimientoForm.cnvCarteraCTI;
+		if(pieChart != null ){
+			pieChart.destroy()
+		}
 		
-		var pieChart = new Chart(ctx, {
+		ctx = seguimientoForm.cnvCarteraCTI;
+
+		pieChart = new Chart(ctx, {
 			type: 'pie',
 			data: {
 			datasets: [{
@@ -110,8 +117,13 @@ $(document).ready(function() {
 			i++;
 		});
 		
+		if(mybarChart != null ){
+			mybarChart.destroy()
+		}
+		
 		var ctx = seguimientoForm.cnvDemandaOferta;
-		var mybarChart = new Chart(ctx, {
+		
+		mybarChart = new Chart(ctx, {
 			type: 'bar',
 			data: {
 				labels: labels,
